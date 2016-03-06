@@ -1,0 +1,309 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="initial-scale=1,user-scalable=no,maximum-scale=1,width=device-width">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <link rel="stylesheet" href="css/leaflet.css" />
+    <link rel="stylesheet" type="text/css" href="css/qgis2web.css">
+    <link rel="stylesheet" href="css/label.css" />
+    <link rel="stylesheet" href="css/MarkerCluster.css" />
+    <link rel="stylesheet" href="css/MarkerCluster.Default.css" />
+        <script src="js/leaflet.js"></script>
+        <script src="js/leaflet-hash.js"></script>
+        <script src="js/label.js"></script>
+        <script src="js/Autolinker.min.js"></script> 
+    <script src="./resources/Autolinker.min.js"></script>
+        <script src="js/leaflet.markercluster.js"></script>
+   
+    <style>
+        html, body, #map {
+            width: 100%;
+            height: 100%;
+            padding: 0;
+            margin: 0;
+        }
+    </style>
+    <title></title>
+  </head>
+  <body>
+    <div id="map">
+        
+    </div>
+    
+        <script src="data/json_polygons.js"></script>
+        <script src="data/json_allheightsbuildings.js"></script>
+        <script src="data/json_pools.js"></script>
+        <script>
+        L.ImageOverlay.include({
+            getBounds: function () {
+                return this._bounds;
+            }
+        });
+        var map = L.map('map', {
+            zoomControl:true, maxZoom:28, minZoom:1
+        }).fitBounds([[40.744,-74.06],[40.75,-74.043]]);
+        var hash = new L.Hash(map);
+        var additional_attrib = '<a href="https://github.com/tomchadwin/qgis2web" target ="_blank">qgis2web</a>';
+        var feature_group = new L.featureGroup([]);
+        var bounds_group = new L.featureGroup([]);
+        var raster_group = new L.LayerGroup([]);
+        var basemap0 = L.tileLayer('http://a.tile.stamen.com/toner/{z}/{x}/{y}.png', {
+            attribution: additional_attrib + ' Map tiles by <a href="http://stamen.com">Stamen Design</a>,<a href="http://creativecommons.org/licenses/by/3.0"> CC BY 3.0</a> &mdash; Mapdata: &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors,<a href="http://creativecommons.org/licenses/by-sa/2.0/"> CC-BY-SA, </a>Map by <a href="http://www.sarahmakesmaps.com">Sarah Levine</a>',
+            maxZoom: 28
+        });
+        basemap0.addTo(map);
+        var layerOrder = new Array();
+        function stackLayers() {
+            for (index = 0; index < layerOrder.length; index++) {
+                map.removeLayer(layerOrder[index]);
+                map.addLayer(layerOrder[index]);
+            }
+        }
+        function restackLayers() {
+            for (index = 0; index < layerOrder.length; index++) {
+                layerOrder[index].bringToFront();
+            }
+        }
+        map.on('overlayadd', restackLayers);
+        layerControl = L.control.layers({},{},{collapsed:false});
+        function pop_polygons(feature, layer) {
+            var popupContent = '<table><tr><th scope="row">osm id</th><td>' + (feature.properties['osm_id'] !== null ? Autolinker.link(String(feature.properties['osm_id'])) : '') + '</td></tr><tr><th scope="row">osm way id</th><td>' + (feature.properties['osm_way_id'] !== null ? Autolinker.link(String(feature.properties['osm_way_id'])) : '') + '</td></tr><tr><th scope="row">name</th><td>' + (feature.properties['name'] !== null ? Autolinker.link(String(feature.properties['name'])) : '') + '</td></tr><tr><th scope="row">building</th><td>' + (feature.properties['building'] !== null ? Autolinker.link(String(feature.properties['building'])) : '') + '</td></tr><tr><th scope="row">land area</th><td>' + (feature.properties['land_area'] !== null ? Autolinker.link(String(feature.properties['land_area'])) : '') + '</td></tr><tr><th scope="row">land use</th><td>' + (feature.properties['landuse'] !== null ? Autolinker.link(String(feature.properties['landuse'])) : '') + '</td></tr><tr><th scope="row">leisure</th><td>' + (feature.properties['leisure'] !== null ? Autolinker.link(String(feature.properties['leisure'])) : '') + '</td></tr><tr><th scope="row">place</th><td>' + (feature.properties['place'] !== null ? Autolinker.link(String(feature.properties['place'])) : '') + '</td></tr><tr><th scope="row">other tags</th><td>' + (feature.properties['other_tags'] !== null ? Autolinker.link(String(feature.properties['other_tags'])) : '') + '</td></tr></table>';
+            layer.bindPopup(popupContent);
+        }
+
+        function doStylepolygons(feature) {
+			switch (feature.properties.landuse) {
+                case 'allotments':
+                    return {
+                    weight: '0.0',
+                    fillColor: '#ca71d9',
+                    color: 'none',
+                    dashArray: '',
+                    lineCap: 'butt',
+                    lineJoin: 'miter',
+                    opacity: '0.0',
+                    fillOpacity: '0.82',
+                };
+                break;
+
+                case 'cemetery':
+                    return {
+                    weight: '0.0',
+                    fillColor: '#4ad43b',
+                    color: 'none',
+                    dashArray: '',
+                    lineCap: 'butt',
+                    lineJoin: 'miter',
+                    opacity: '0.0',
+                    fillOpacity: '0.82',
+                };
+                break;
+
+                case 'commercial':
+                    return {
+                    weight: '0.0',
+                    fillColor: '#12e4e4',
+                    color: 'none',
+                    dashArray: '',
+                    lineCap: 'butt',
+                    lineJoin: 'miter',
+                    opacity: '0.0',
+                    fillOpacity: '0.82',
+                };
+                break;
+
+                case 'construction':
+                    return {
+                    weight: '0.0',
+                    fillColor: '#86e58c',
+                    color: 'none',
+                    dashArray: '',
+                    lineCap: 'butt',
+                    lineJoin: 'miter',
+                    opacity: '0.0',
+                    fillOpacity: '0.82',
+                };
+                break;
+
+                case 'forest':
+                    return {
+                    weight: '0.0',
+                    fillColor: '#c9e527',
+                    color: 'none',
+                    dashArray: '',
+                    lineCap: 'butt',
+                    lineJoin: 'miter',
+                    opacity: '0.0',
+                    fillOpacity: '0.82',
+                };
+                break;
+
+                case 'grass':
+                    return {
+                    weight: '0.0',
+                    fillColor: '#b2df8a',
+                    color: 'none',
+                    dashArray: '',
+                    lineCap: 'butt',
+                    lineJoin: 'miter',
+                    opacity: '0.0',
+                    fillOpacity: '0.82',
+                };
+                break;
+
+                case 'industrial':
+                    return {
+                    weight: '0.0',
+                    fillColor: '#fb9a3d',
+                    color: 'none',
+                    dashArray: '',
+                    lineCap: 'butt',
+                    lineJoin: 'miter',
+                    opacity: '0.0',
+                    fillOpacity: '0.82',
+                };
+                break;
+
+                case 'meadow':
+                    return {
+                    weight: '0.0',
+                    fillColor: '#63e30e',
+                    color: 'none',
+                    dashArray: '',
+                    lineCap: 'butt',
+                    lineJoin: 'miter',
+                    opacity: '0.0',
+                    fillOpacity: '0.82',
+                };
+                break;
+
+                case 'railway':
+                    return {
+                    weight: '0.0',
+                    fillColor: '#47e79f',
+                    color: 'none',
+                    dashArray: '',
+                    lineCap: 'butt',
+                    lineJoin: 'miter',
+                    opacity: '0.0',
+                    fillOpacity: '0.82',
+                };
+                break;
+
+                case 'recreation_ground':
+                    return {
+                    weight: '0.0',
+                    fillColor: '#33a02c',
+                    color: 'none',
+                    dashArray: '',
+                    lineCap: 'butt',
+                    lineJoin: 'miter',
+                    opacity: '0.0',
+                    fillOpacity: '0.82',
+                };
+                break;
+
+                case 'reservoir':
+                    return {
+                    weight: '0.0',
+                    fillColor: '#5782d5',
+                    color: 'none',
+                    dashArray: '',
+                    lineCap: 'butt',
+                    lineJoin: 'miter',
+                    opacity: '0.0',
+                    fillOpacity: '0.82',
+                };
+                break;
+
+                case 'retail':
+                    return {
+                    weight: '0.0',
+                    fillColor: '#cc7c8f',
+                    color: 'none',
+                    dashArray: '',
+                    lineCap: 'butt',
+                    lineJoin: 'miter',
+                    opacity: '0.0',
+                    fillOpacity: '0.82',
+                };
+                break;
+
+                default:
+                    return {
+                    weight: '0.0',
+                    fillColor: '#ededed',
+                    color: 'none',
+                    dashArray: '',
+                    lineCap: 'butt',
+                    lineJoin: 'miter',
+                    opacity: '0.0',
+                    fillOpacity: '0.82',
+                };
+                break;
+
+            }
+        }
+            var json_polygonsJSON = new L.geoJson(json_polygons, {
+                onEachFeature: pop_polygons,
+                style: doStylepolygons
+            });
+            layerOrder[layerOrder.length] = json_polygonsJSON;
+        bounds_group.addLayer(json_polygonsJSON);
+        feature_group.addLayer(json_polygonsJSON);
+        function pop_allheightsbuildings(feature, layer) {
+            var popupContent = '<table><tr><th scope="row">osm id</th><td>' + (feature.properties['osm_id'] !== null ? Autolinker.link(String(feature.properties['osm_id'])) : '') + '</td></tr><tr><th scope="row">osm way id</th><td>' + (feature.properties['osm_way_id'] !== null ? Autolinker.link(String(feature.properties['osm_way_id'])) : '') + '</td></tr><tr><th scope="row">name</th><td>' + (feature.properties['name'] !== null ? Autolinker.link(String(feature.properties['name'])) : '') + '</td></tr><tr><th scope="row">building</th><td>' + (feature.properties['building'] !== null ? Autolinker.link(String(feature.properties['building'])) : '') + '</td></tr><tr><th scope="row">land area</th><td>' + (feature.properties['land_area'] !== null ? Autolinker.link(String(feature.properties['land_area'])) : '') + '</td></tr><tr><th scope="row">land use</th><td>' + (feature.properties['landuse'] !== null ? Autolinker.link(String(feature.properties['landuse'])) : '') + '</td></tr><tr><th scope="row">other tags</th><td>' + (feature.properties['other_tags'] !== null ? Autolinker.link(String(feature.properties['other_tags'])) : '') + '</td></tr></table>';
+            layer.bindPopup(popupContent);
+        }
+
+        function doStyleallheightsbuildings(feature) {
+            return {
+                weight: 0.006,
+                color: '#ffffff',
+                fillColor: '#8cebff',
+                dashArray: '',
+                lineCap: 'square',
+                lineJoin: 'bevel',
+                opacity: 0.92,
+                fillOpacity: 0.92
+            };
+        }
+            var json_allheightsbuildingsJSON = new L.geoJson(json_allheightsbuildings, {
+                onEachFeature: pop_allheightsbuildings,
+                style: doStyleallheightsbuildings
+            });
+            layerOrder[layerOrder.length] = json_allheightsbuildingsJSON;
+        bounds_group.addLayer(json_allheightsbuildingsJSON);
+        feature_group.addLayer(json_allheightsbuildingsJSON);
+
+        function doStylepools(feature) {
+            return {
+                weight: 0,
+                color: '#000000',
+                fillColor: '#09bce5',
+                dashArray: '',
+                lineCap: 'square',
+                lineJoin: 'bevel',
+                opacity: 1.0,
+                fillOpacity: 1.0
+            };
+        }
+            var json_poolsJSON = new L.geoJson(json_pools, {
+                style: doStylepools
+            });
+            layerOrder[layerOrder.length] = json_poolsJSON;
+        bounds_group.addLayer(json_poolsJSON);
+        feature_group.addLayer(json_poolsJSON);
+        raster_group.addTo(map);
+        feature_group.addTo(map);
+    var baseMaps = {'Stamen Toner': basemap0};
+        L.control.layers(baseMaps,{'<img src="legend/pools.png" /> pools': json_poolsJSON,'<img src="legend/allheightsbuildings.png" /> buildings': json_allheightsbuildingsJSON,'land uses<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src="legend/polygons_allotments.png" /> allotments<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src="legend/polygons_cemetery.png" /> cemetery<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src="legend/polygons_commercial.png" /> commercial<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src="legend/polygons_construction.png" /> construction<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src="legend/polygons_forest.png" /> forest<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src="legend/polygons_grass.png" /> grass<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src="legend/polygons_industrial.png" /> industrial<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src="legend/polygons_meadow.png" /> meadow<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src="legend/polygons_railway.png" /> railway<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src="legend/polygons_recreationground.png" /> recreation ground<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src="legend/polygons_reservoir.png" /> reservoir<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src="legend/polygons_retail.png" /> retail<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src="legend/polygons_.png" /> other<br />': json_polygonsJSON,},{collapsed:false}).addTo(map);
+        stackLayers();
+    </script>
+    
+    
+  </body>
+</html>
