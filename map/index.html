@@ -1,0 +1,354 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="initial-scale=1,user-scalable=no,maximum-scale=1,width=device-width">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    
+    <link rel="stylesheet" href="css/leaflet.css" />
+    
+    <link rel="stylesheet" type="text/css" href="css/qgis2web.css">
+    <link rel="stylesheet" href="css/label.css" />
+    
+    <link rel="stylesheet" href="css/MarkerCluster.css" />
+    <link rel="stylesheet" href="css/MarkerCluster.Default.css" />
+    
+        <script src="js/leaflet.js"></script>
+    
+        <script src="js/leaflet-hash.js"></script>
+        <script src="js/label.js"></script>
+        <script src="js/Autolinker.min.js"></script>
+    
+    <script src="./resources/Autolinker.min.js"></script>
+            <script src="js/leaflet.markercluster.js"></script>
+    
+    
+     
+    <style>
+        html, body, #map {
+            width: 100%;
+            height: 100%;
+            padding: 0;
+            margin: 0;
+        }
+    </style>
+    <title></title>
+  </head>
+  <body>
+    <div id="map">
+        
+    </div>
+    
+        <script src="data/json_landuse.js"></script>
+        <script src="data/json_roads.js"></script>
+        <script src="data/json_buildings.js"></script>
+        <script>
+        L.ImageOverlay.include({
+            getBounds: function () {
+                return this._bounds;
+            }
+        });
+        var map = L.map('map', {
+            zoomControl:true, maxZoom:28, minZoom:1
+        }).fitBounds([[40.743682097,-74.0538995004],[40.7465296401,-74.0370683401]]);
+        var hash = new L.Hash(map);
+        var additional_attrib = '<a href="https://github.com/tomchadwin/qgis2web" target ="_blank">qgis2web</a>';
+        var feature_group = new L.featureGroup([]);
+        var bounds_group = new L.featureGroup([]);
+        var raster_group = new L.LayerGroup([]);
+        var basemap0 = L.tileLayer('http://a.tile.stamen.com/toner/{z}/{x}/{y}.png', {
+            attribution: additional_attrib + ' Map tiles by <a href="http://stamen.com">Stamen Design</a>, <a href="http://creativecommons.org/licenses/by/3.0">CC BY 3.0</a> &mdash; Mapdata: &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, map by <a href="http://sarahmakesmaps.org">Sarah Levine</a>',
+            maxZoom: 28
+        });
+        basemap0.addTo(map);
+        var layerOrder = new Array();
+        function stackLayers() {
+            for (index = 0; index < layerOrder.length; index++) {
+                map.removeLayer(layerOrder[index]);
+                map.addLayer(layerOrder[index]);
+            }
+        }
+        function restackLayers() {
+            for (index = 0; index < layerOrder.length; index++) {
+                layerOrder[index].bringToFront();
+            }
+        }
+        map.on('overlayadd', restackLayers);
+        layerControl = L.control.layers({},{},{collapsed:false});
+        function pop_landuse(feature, layer) {
+            var popupContent = '<table><tr><th scope="row">type</th><td>' + (feature.properties['type'] !== null ? Autolinker.link(String(feature.properties['type'])) : '') + '</td></tr><tr><th scope="row">type</th><td>' + (feature.properties['type'] !== null ? Autolinker.link(String(feature.properties['type'])) : '') + '</td></tr></table>';
+            layer.bindPopup(popupContent);
+        }
+
+        function doStylelanduse(feature) {
+			switch (feature.properties.type) {
+                case 'allotments':
+                    return {
+                    weight: '1.04',
+                    fillColor: '#64a1e2',
+                    color: 'none',
+                    dashArray: '',
+                    lineCap: 'butt',
+                    lineJoin: 'miter',
+                    opacity: '0.83',
+                    fillOpacity: '0.83',
+                };
+                break;
+
+                case 'basin':
+                    return {
+                    weight: '1.04',
+                    fillColor: '#a6cee3',
+                    color: 'none',
+                    dashArray: '',
+                    lineCap: 'butt',
+                    lineJoin: 'miter',
+                    opacity: '0.83',
+                    fillOpacity: '0.83',
+                };
+                break;
+
+                case 'cemetery':
+                    return {
+                    weight: '1.04',
+                    fillColor: '#e2e2e2',
+                    color: 'none',
+                    dashArray: '',
+                    lineCap: 'butt',
+                    lineJoin: 'miter',
+                    opacity: '0.83',
+                    fillOpacity: '0.83',
+                };
+                break;
+
+                case 'commercial':
+                    return {
+                    weight: '1.04',
+                    fillColor: '#4bed94',
+                    color: 'none',
+                    dashArray: '',
+                    lineCap: 'butt',
+                    lineJoin: 'miter',
+                    opacity: '0.83',
+                    fillOpacity: '0.83',
+                };
+                break;
+
+                case 'conservation':
+                    return {
+                    weight: '1.04',
+                    fillColor: '#b2df8a',
+                    color: 'none',
+                    dashArray: '',
+                    lineCap: 'butt',
+                    lineJoin: 'miter',
+                    opacity: '0.83',
+                    fillOpacity: '0.83',
+                };
+                break;
+
+                case 'construction':
+                    return {
+                    weight: '1.04',
+                    fillColor: '#ff644c',
+                    color: 'none',
+                    dashArray: '',
+                    lineCap: 'butt',
+                    lineJoin: 'miter',
+                    opacity: '0.83',
+                    fillOpacity: '0.83',
+                };
+                break;
+
+                case 'grass':
+                    return {
+                    weight: '1.04',
+                    fillColor: '#b2df8a',
+                    color: 'none',
+                    dashArray: '',
+                    lineCap: 'butt',
+                    lineJoin: 'miter',
+                    opacity: '0.83',
+                    fillOpacity: '0.83',
+                };
+                break;
+
+                case 'greenfield':
+                    return {
+                    weight: '1.04',
+                    fillColor: '#33a02c',
+                    color: 'none',
+                    dashArray: '',
+                    lineCap: 'butt',
+                    lineJoin: 'miter',
+                    opacity: '0.83',
+                    fillOpacity: '0.83',
+                };
+                break;
+
+                case 'industrial':
+                    return {
+                    weight: '1.04',
+                    fillColor: '#fdbf6f',
+                    color: 'none',
+                    dashArray: '',
+                    lineCap: 'butt',
+                    lineJoin: 'miter',
+                    opacity: '0.83',
+                    fillOpacity: '0.83',
+                };
+                break;
+
+                case 'meadow':
+                    return {
+                    weight: '1.04',
+                    fillColor: '#b2df8a',
+                    color: 'none',
+                    dashArray: '',
+                    lineCap: 'butt',
+                    lineJoin: 'miter',
+                    opacity: '0.83',
+                    fillOpacity: '0.83',
+                };
+                break;
+
+                case 'military':
+                    return {
+                    weight: '1.04',
+                    fillColor: '#5f7939',
+                    color: 'none',
+                    dashArray: '',
+                    lineCap: 'butt',
+                    lineJoin: 'miter',
+                    opacity: '0.83',
+                    fillOpacity: '0.83',
+                };
+                break;
+
+                case 'railway':
+                    return {
+                    weight: '1.04',
+                    fillColor: '#cc3f41',
+                    color: 'none',
+                    dashArray: '',
+                    lineCap: 'butt',
+                    lineJoin: 'miter',
+                    opacity: '0.83',
+                    fillOpacity: '0.83',
+                };
+                break;
+
+                case 'recreation_groun':
+                    return {
+                    weight: '1.04',
+                    fillColor: '#b2df8a',
+                    color: 'none',
+                    dashArray: '',
+                    lineCap: 'butt',
+                    lineJoin: 'miter',
+                    opacity: '0.83',
+                    fillOpacity: '0.83',
+                };
+                break;
+
+                case 'reservoir':
+                    return {
+                    weight: '1.04',
+                    fillColor: '#3fd1e1',
+                    color: 'none',
+                    dashArray: '',
+                    lineCap: 'butt',
+                    lineJoin: 'miter',
+                    opacity: '0.83',
+                    fillOpacity: '0.83',
+                };
+                break;
+
+                case 'residential':
+                    return {
+                    weight: '1.04',
+                    fillColor: '#8d79cf',
+                    color: 'none',
+                    dashArray: '',
+                    lineCap: 'butt',
+                    lineJoin: 'miter',
+                    opacity: '0.83',
+                    fillOpacity: '0.83',
+                };
+                break;
+
+                case 'retail':
+                    return {
+                    weight: '1.04',
+                    fillColor: '#1f78b4',
+                    color: 'none',
+                    dashArray: '',
+                    lineCap: 'butt',
+                    lineJoin: 'miter',
+                    opacity: '0.83',
+                    fillOpacity: '0.83',
+                };
+                break;
+
+            }
+        }
+            var json_landuseJSON = new L.geoJson(json_landuse, {
+                onEachFeature: pop_landuse,
+                style: doStylelanduse
+            });
+            layerOrder[layerOrder.length] = json_landuseJSON;
+        bounds_group.addLayer(json_landuseJSON);
+        feature_group.addLayer(json_landuseJSON);
+
+        function doStyleroads(feature) {
+            return {
+                weight: 0.24,
+                color: '#8797bf',
+                dashArray: '',
+                lineCap: 'square',
+                lineJoin: 'bevel',
+                opacity: 1.0
+            };
+        }
+            var json_roadsJSON = new L.geoJson(json_roads, {
+                style: doStyleroads
+            });
+            layerOrder[layerOrder.length] = json_roadsJSON;
+        bounds_group.addLayer(json_roadsJSON);
+        feature_group.addLayer(json_roadsJSON);
+        function pop_buildings(feature, layer) {
+            var popupContent = '<table><tr><th scope="row">osm way id</th><td>' + (feature.properties['osm_way_id'] !== null ? Autolinker.link(String(feature.properties['osm_way_id'])) : '') + '</td></tr><tr><th scope="row">name</th><td>' + (feature.properties['name'] !== null ? Autolinker.link(String(feature.properties['name'])) : '') + '</td></tr><tr><th scope="row">type</th><td>' + (feature.properties['type'] !== null ? Autolinker.link(String(feature.properties['type'])) : '') + '</td></tr><tr><th scope="row">aeroway</th><td>' + (feature.properties['aeroway'] !== null ? Autolinker.link(String(feature.properties['aeroway'])) : '') + '</td></tr><tr><th scope="row">amenity</th><td>' + (feature.properties['amenity'] !== null ? Autolinker.link(String(feature.properties['amenity'])) : '') + '</td></tr><tr><th scope="row">barrier</th><td>' + (feature.properties['barrier'] !== null ? Autolinker.link(String(feature.properties['barrier'])) : '') + '</td></tr><tr><th scope="row">boundary</th><td>' + (feature.properties['boundary'] !== null ? Autolinker.link(String(feature.properties['boundary'])) : '') + '</td></tr><tr><th scope="row">building</th><td>' + (feature.properties['building'] !== null ? Autolinker.link(String(feature.properties['building'])) : '') + '</td></tr><tr><th scope="row">craft</th><td>' + (feature.properties['craft'] !== null ? Autolinker.link(String(feature.properties['craft'])) : '') + '</td></tr><tr><th scope="row">geological</th><td>' + (feature.properties['geological'] !== null ? Autolinker.link(String(feature.properties['geological'])) : '') + '</td></tr><tr><th scope="row">historic</th><td>' + (feature.properties['historic'] !== null ? Autolinker.link(String(feature.properties['historic'])) : '') + '</td></tr><tr><th scope="row">land area</th><td>' + (feature.properties['land_area'] !== null ? Autolinker.link(String(feature.properties['land_area'])) : '') + '</td></tr><tr><th scope="row">landuse</th><td>' + (feature.properties['landuse'] !== null ? Autolinker.link(String(feature.properties['landuse'])) : '') + '</td></tr><tr><th scope="row">leisure</th><td>' + (feature.properties['leisure'] !== null ? Autolinker.link(String(feature.properties['leisure'])) : '') + '</td></tr><tr><th scope="row">military</th><td>' + (feature.properties['military'] !== null ? Autolinker.link(String(feature.properties['military'])) : '') + '</td></tr><tr><th scope="row">natural</th><td>' + (feature.properties['natural'] !== null ? Autolinker.link(String(feature.properties['natural'])) : '') + '</td></tr><tr><th scope="row">office</th><td>' + (feature.properties['office'] !== null ? Autolinker.link(String(feature.properties['office'])) : '') + '</td></tr><tr><th scope="row">place</th><td>' + (feature.properties['place'] !== null ? Autolinker.link(String(feature.properties['place'])) : '') + '</td></tr><tr><th scope="row">shop</th><td>' + (feature.properties['shop'] !== null ? Autolinker.link(String(feature.properties['shop'])) : '') + '</td></tr><tr><th scope="row">sport</th><td>' + (feature.properties['sport'] !== null ? Autolinker.link(String(feature.properties['sport'])) : '') + '</td></tr><tr><th scope="row">tourism</th><td>' + (feature.properties['tourism'] !== null ? Autolinker.link(String(feature.properties['tourism'])) : '') + '</td></tr></table>';
+            layer.bindPopup(popupContent);
+        }
+
+        function doStylebuildings(feature) {
+            return {
+                weight: 0,
+                color: '#d5fc37',
+                fillColor: '#d5fc37',
+                dashArray: '',
+                lineCap: 'square',
+                lineJoin: 'bevel',
+                opacity: 0.96,
+                fillOpacity: 0.96
+            };
+        }
+            var json_buildingsJSON = new L.geoJson(json_buildings, {
+                onEachFeature: pop_buildings,
+                style: doStylebuildings
+            });
+            layerOrder[layerOrder.length] = json_buildingsJSON;
+        bounds_group.addLayer(json_buildingsJSON);
+        feature_group.addLayer(json_buildingsJSON);
+        raster_group.addTo(map);
+        feature_group.addTo(map);
+    var baseMaps = {'Stamen Basemap': basemap0};
+        L.control.layers(baseMaps,{'<img src="legend/buildings.png" /> buildings': json_buildingsJSON,'<img src="legend/roads.png" /> roads': json_roadsJSON,'land use<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src="legend/landuse_allotments.png" /> allotments<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src="legend/landuse_basin.png" /> basin<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src="legend/landuse_cemetery.png" /> cemetery<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src="legend/landuse_commercial.png" /> commercial<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src="legend/landuse_conservation.png" /> conservation<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src="legend/landuse_construction.png" /> construction<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src="legend/landuse_grass.png" /> grass<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src="legend/landuse_greenfield.png" /> greenfield<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src="legend/landuse_industrial.png" /> industrial<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src="legend/landuse_meadow.png" /> meadow<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src="legend/landuse_military.png" /> military<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src="legend/landuse_railway.png" /> railway<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src="legend/landuse_recreationgroun.png" /> recreation ground<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src="legend/landuse_reservoir.png" /> reservoir<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src="legend/landuse_residential.png" /> residential<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src="legend/landuse_retail.png" /> retail<br />': json_landuseJSON,},{collapsed:false}).addTo(map);
+        stackLayers();
+    </script>
+    
+    
+  </body>
+</html>
