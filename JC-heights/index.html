@@ -1,0 +1,981 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="initial-scale=1,user-scalable=no,maximum-scale=1,width=device-width">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <link rel="stylesheet" href="css/leaflet.css" />
+    <link rel="stylesheet" type="text/css" href="css/qgis2web.css">
+    <link rel="stylesheet" href="css/label.css" />
+    <link rel="stylesheet" href="css/MarkerCluster.css" />
+    <link rel="stylesheet" href="css/MarkerCluster.Default.css" />
+        <script src="js/leaflet.js"></script>
+        <script src="js/leaflet-hash.js"></script>
+        <script src="js/label.js"></script>
+        <script src="js/Autolinker.min.js"></script>
+    <script src="./resources/Autolinker.min.js"></script>
+        <script src="js/leaflet.markercluster.js"></script>
+
+    <style>
+        html, body, #map {
+            width: 100%;
+            height: 100%;
+            padding: 0;
+            margin: 0;
+        }
+    </style>
+    <title></title>
+  </head>
+  <body>
+    <div id="map">
+        
+    </div>
+    
+        <script src="data/json_other.js"></script>
+        <script src="data/json_parking.js"></script>
+        <script src="data/json_reservoir.js"></script>
+        <script src="data/json_parks.js"></script>
+        <script src="data/json_fields.js"></script>
+        <script src="data/json_pools.js"></script>
+        <script src="data/sheds.js"></script>
+        <script src="data/json_otherbuildings.js"></script>
+        <script src="data/json_beaconaveplanarea.js"></script>
+        <script src="data/json_websteraveplanarea.js"></script>
+        <script src="data/json_hopkinscentralplanarea.js"></script>
+        <script src="data/json_highwaycommercial.js"></script>
+        <script src="data/json_governmentbuildings.js"></script>
+        <script src="data/json_medicalbuildings.js"></script>
+        <script src="data/json_neighborhoodcommercial.js"></script>
+        <script src="data/json_residential3buildings.js"></script>
+        <script src="data/json_residential2buildings.js"></script>
+        <script src="data/json_residential1Abuildings.js"></script>
+        <script src="data/json_residential1buildings.js"></script>
+        <script>
+        L.ImageOverlay.include({
+            getBounds: function () {
+                return this._bounds;
+            }
+        });
+        var map = L.map('map', {
+            zoomControl:true, maxZoom:28, minZoom:1
+        }).fitBounds([[40.7417061496,-74.0557804946],[40.749100705,-74.0402962662]]);
+        var hash = new L.Hash(map);
+        var additional_attrib = '<a href="https://github.com/tomchadwin/qgis2web" target ="_blank">qgis2web</a>';
+        var feature_group = new L.featureGroup([]);
+        var bounds_group = new L.featureGroup([]);
+        var raster_group = new L.LayerGroup([]);
+        var basemap0 = L.tileLayer('http://a.tile.stamen.com/toner/{z}/{x}/{y}.png', {
+            attribution: additional_attrib + ' Map tiles by <a href="http://stamen.com">Stamen Design</a>,<a href="http://creativecommons.org/licenses/by/3.0"> CC BY 3.0</a> &mdash; Mapdata: &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors,<a href="http://creativecommons.org/licenses/by-sa/2.0/"> CC-BY-SA, </a>Map by <a href="http://www.sarahmakesmaps.com">Sarah Levine</a>',
+            maxZoom: 28
+        });
+        basemap0.addTo(map);
+        var layerOrder = new Array();
+        function stackLayers() {
+            for (index = 0; index < layerOrder.length; index++) {
+                map.removeLayer(layerOrder[index]);
+                map.addLayer(layerOrder[index]);
+            }
+        }
+        function restackLayers() {
+            for (index = 0; index < layerOrder.length; index++) {
+                layerOrder[index].bringToFront();
+            }
+        }
+        map.on('overlayadd', restackLayers);
+        layerControl = L.control.layers({},{},{collapsed:false});
+        
+
+
+
+
+
+
+        function pop_residential1buildings(feature, layer) {
+            var popupContent = '<table><tr><th scope="row">osm id</th><td>' + (feature.properties['osm_id'] !== null ? Autolinker.link(String(feature.properties['osm_id'])) : '') 
+            + '</td></tr><tr><th scope="row">osm way id</th><td>' + (feature.properties['osm_way_id'] !== null ? Autolinker.link(String(feature.properties['osm_way_id'])) : '') 
+            + '</td></tr><tr><th scope="row">name</th><td>' + (feature.properties['name'] !== null ? Autolinker.link(String(feature.properties['name'])) : '') 
+            + '</td></tr><tr><th scope="row">type</th><td>' + (feature.properties['type'] !== null ? Autolinker.link(String(feature.properties['type'])) : '') 
+            + '</td></tr><tr><th scope="row">amenity</th><td>' + (feature.properties['amenity'] !== null ? Autolinker.link(String(feature.properties['amenity'])) : '') 
+            + '</td></tr><tr><th scope="row">building</th><td>' + (feature.properties['building'] !== null ? Autolinker.link(String(feature.properties['building'])) : '') 
+            + '</td></tr><tr><th scope="row">historic</th><td>' + (feature.properties['historic'] !== null ? Autolinker.link(String(feature.properties['historic'])) : '') 
+            + '</td></tr><tr><th scope="row">land area</th><td>' + (feature.properties['land_area'] !== null ? Autolinker.link(String(feature.properties['land_area'])) : '') 
+            + '</td></tr><tr><th scope="row">landuse</th><td>' + (feature.properties['landuse'] !== null ? Autolinker.link(String(feature.properties['landuse'])) : '') 
+            + '</td></tr><tr><th scope="row">natural</th><td>' + (feature.properties['natural'] !== null ? Autolinker.link(String(feature.properties['natural'])) : '') 
+            + '</td></tr><tr><th scope="row">other tags</th><td>' + (feature.properties['other_tags'] !== null ? Autolinker.link(String(feature.properties['other_tags'])) : '') + '</td></tr></table>';
+            layer.bindPopup(popupContent);
+        }
+
+        function doStyleresidential1buildings(feature) {
+            return {
+                weight: 0,
+                color: '#ffffff',
+                fillColor: '#5af5ee',
+                dashArray: '',
+                lineCap: 'square',
+                lineJoin: 'bevel',
+                opacity: 0.9,
+                fillOpacity: 0.9
+            };
+        }
+            var json_residential1buildingsJSON = new L.geoJson(json_residential1buildings, {
+                onEachFeature: pop_residential1buildings,
+                style: doStyleresidential1buildings
+            });
+            layerOrder[layerOrder.length] = json_residential1buildingsJSON;
+        bounds_group.addLayer(json_residential1buildingsJSON);
+        feature_group.addLayer(json_residential1buildingsJSON);
+
+        function pop_other(feature, layer) {
+            var popupContent = '<table><tr><th scope="row">osm id</th><td>' + (feature.properties['osm_id'] !== null ? Autolinker.link(String(feature.properties['osm_id'])) : '') 
+            + '</td></tr><tr><th scope="row">osm way id</th><td>' + (feature.properties['osm_way_id'] !== null ? Autolinker.link(String(feature.properties['osm_way_id'])) : '') 
+            + '</td></tr><tr><th scope="row">name</th><td>' + (feature.properties['name'] !== null ? Autolinker.link(String(feature.properties['name'])) : '') 
+            + '</td></tr><tr><th scope="row">type</th><td>' + (feature.properties['type'] !== null ? Autolinker.link(String(feature.properties['type'])) : '') 
+            + '</td></tr><tr><th scope="row">amenity</th><td>' + (feature.properties['amenity'] !== null ? Autolinker.link(String(feature.properties['amenity'])) : '') 
+            + '</td></tr><tr><th scope="row">building</th><td>' + (feature.properties['building'] !== null ? Autolinker.link(String(feature.properties['building'])) : '') 
+            + '</td></tr><tr><th scope="row">historic</th><td>' + (feature.properties['historic'] !== null ? Autolinker.link(String(feature.properties['historic'])) : '') 
+            + '</td></tr><tr><th scope="row">landuse</th><td>' + (feature.properties['landuse'] !== null ? Autolinker.link(String(feature.properties['landuse'])) : '') 
+            + '</td></tr><tr><th scope="row">leisure</th><td>' + (feature.properties['leisure'] !== null ? Autolinker.link(String(feature.properties['leisure'])) : '') 
+            + '</td></tr><tr><th scope="row">other tags</th><td>' + (feature.properties['other_tags'] !== null ? Autolinker.link(String(feature.properties['other_tags'])) : '') 
+            + '</td></tr></table>';
+            layer.bindPopup(popupContent);
+        }
+
+
+
+
+
+
+
+
+
+
+        function pop_residential1Abuildings(feature, layer) {
+            var popupContent = '<table><tr><th scope="row">osm id</th><td>' + (feature.properties['osm_id'] !== null ? Autolinker.link(String(feature.properties['osm_id'])) : '') 
+            + '</td></tr><tr><th scope="row">osm way id</th><td>' + (feature.properties['osm_way_id'] !== null ? Autolinker.link(String(feature.properties['osm_way_id'])) : '') 
+            + '</td></tr><tr><th scope="row">name</th><td>' + (feature.properties['name'] !== null ? Autolinker.link(String(feature.properties['name'])) : '') 
+            + '</td></tr><tr><th scope="row">type</th><td>' + (feature.properties['type'] !== null ? Autolinker.link(String(feature.properties['type'])) : '') 
+            + '</td></tr><tr><th scope="row">amenity</th><td>' + (feature.properties['amenity'] !== null ? Autolinker.link(String(feature.properties['amenity'])) : '') 
+            + '</td></tr><tr><th scope="row">building</th><td>' + (feature.properties['building'] !== null ? Autolinker.link(String(feature.properties['building'])) : '') 
+            + '</td></tr><tr><th scope="row">historic</th><td>' + (feature.properties['historic'] !== null ? Autolinker.link(String(feature.properties['historic'])) : '') 
+            + '</td></tr><tr><th scope="row">land area</th><td>' + (feature.properties['land_area'] !== null ? Autolinker.link(String(feature.properties['land_area'])) : '') 
+            + '</td></tr><tr><th scope="row">landuse</th><td>' + (feature.properties['landuse'] !== null ? Autolinker.link(String(feature.properties['landuse'])) : '') 
+            + '</td></tr><tr><th scope="row">natural</th><td>' + (feature.properties['natural'] !== null ? Autolinker.link(String(feature.properties['natural'])) : '') 
+            + '</td></tr><tr><th scope="row">other tags</th><td>' + (feature.properties['other_tags'] !== null ? Autolinker.link(String(feature.properties['other_tags'])) : '') + '</td></tr></table>';
+            layer.bindPopup(popupContent);
+        }
+
+        function doStyleresidential1Abuildings(feature) {
+            return {
+                weight: 0,
+                color: '#fdfdfd',
+                fillColor: '#5ab4ba',
+                dashArray: '',
+                lineCap: 'square',
+                lineJoin: 'bevel',
+                opacity: 0.88,
+                fillOpacity: 0.88
+            };
+        }
+            var json_residential1AbuildingsJSON = new L.geoJson(json_residential1Abuildings, {
+                onEachFeature: pop_residential1Abuildings,
+                style: doStyleresidential1Abuildings
+            });
+            layerOrder[layerOrder.length] = json_residential1AbuildingsJSON;
+        bounds_group.addLayer(json_residential1AbuildingsJSON);
+        feature_group.addLayer(json_residential1AbuildingsJSON);
+        
+
+
+
+
+
+
+
+
+        function pop_residential2buildings(feature, layer) {
+            var popupContent = '<table><tr><th scope="row">osm id</th><td>' + (feature.properties['osm_id'] !== null ? Autolinker.link(String(feature.properties['osm_id'])) : '') 
+            + '</td></tr><tr><th scope="row">osm way id</th><td>' + (feature.properties['osm_way_id'] !== null ? Autolinker.link(String(feature.properties['osm_way_id'])) : '') 
+            + '</td></tr><tr><th scope="row">name</th><td>' + (feature.properties['name'] !== null ? Autolinker.link(String(feature.properties['name'])) : '') 
+            + '</td></tr><tr><th scope="row">type</th><td>' + (feature.properties['type'] !== null ? Autolinker.link(String(feature.properties['type'])) : '') 
+            + '</td></tr><tr><th scope="row">amenity</th><td>' + (feature.properties['amenity'] !== null ? Autolinker.link(String(feature.properties['amenity'])) : '') 
+            + '</td></tr><tr><th scope="row">building</th><td>' + (feature.properties['building'] !== null ? Autolinker.link(String(feature.properties['building'])) : '') 
+            + '</td></tr><tr><th scope="row">historic</th><td>' + (feature.properties['historic'] !== null ? Autolinker.link(String(feature.properties['historic'])) : '') 
+            + '</td></tr><tr><th scope="row">land area</th><td>' + (feature.properties['land_area'] !== null ? Autolinker.link(String(feature.properties['land_area'])) : '') 
+            + '</td></tr><tr><th scope="row">landuse</th><td>' + (feature.properties['landuse'] !== null ? Autolinker.link(String(feature.properties['landuse'])) : '') 
+            + '</td></tr><tr><th scope="row">natural</th><td>' + (feature.properties['natural'] !== null ? Autolinker.link(String(feature.properties['natural'])) : '') 
+            + '</td></tr><tr><th scope="row">other tags</th><td>' + (feature.properties['other_tags'] !== null ? Autolinker.link(String(feature.properties['other_tags'])) : '') + '</td></tr></table>';
+            layer.bindPopup(popupContent);
+        }
+
+        function doStyleresidential2buildings(feature) {
+            return {
+                weight: 0,
+                color: '#fbfbfb',
+                fillColor: '#6fc8db',
+                dashArray: '',
+                lineCap: 'square',
+                lineJoin: 'bevel',
+                opacity: 0.88,
+                fillOpacity: 0.88
+            };
+        }
+            var json_residential2buildingsJSON = new L.geoJson(json_residential2buildings, {
+                onEachFeature: pop_residential2buildings,
+                style: doStyleresidential2buildings
+            });
+            layerOrder[layerOrder.length] = json_residential2buildingsJSON;
+        bounds_group.addLayer(json_residential2buildingsJSON);
+        feature_group.addLayer(json_residential2buildingsJSON);
+
+
+
+
+
+
+
+
+
+
+        function pop_residential3buildings(feature, layer) {
+            var popupContent = '<table><tr><th scope="row">osm id</th><td>' + (feature.properties['osm_id'] !== null ? Autolinker.link(String(feature.properties['osm_id'])) : '') 
+            + '</td></tr><tr><th scope="row">osm way id</th><td>' + (feature.properties['osm_way_id'] !== null ? Autolinker.link(String(feature.properties['osm_way_id'])) : '') 
+            + '</td></tr><tr><th scope="row">name</th><td>' + (feature.properties['name'] !== null ? Autolinker.link(String(feature.properties['name'])) : '') 
+            + '</td></tr><tr><th scope="row">type</th><td>' + (feature.properties['type'] !== null ? Autolinker.link(String(feature.properties['type'])) : '') 
+            + '</td></tr><tr><th scope="row">amenity</th><td>' + (feature.properties['amenity'] !== null ? Autolinker.link(String(feature.properties['amenity'])) : '') 
+            + '</td></tr><tr><th scope="row">building</th><td>' + (feature.properties['building'] !== null ? Autolinker.link(String(feature.properties['building'])) : '') 
+            + '</td></tr><tr><th scope="row">historic</th><td>' + (feature.properties['historic'] !== null ? Autolinker.link(String(feature.properties['historic'])) : '') 
+            + '</td></tr><tr><th scope="row">land area</th><td>' + (feature.properties['land_area'] !== null ? Autolinker.link(String(feature.properties['land_area'])) : '') 
+            + '</td></tr><tr><th scope="row">landuse</th><td>' + (feature.properties['landuse'] !== null ? Autolinker.link(String(feature.properties['landuse'])) : '') 
+            + '</td></tr><tr><th scope="row">natural</th><td>' + (feature.properties['natural'] !== null ? Autolinker.link(String(feature.properties['natural'])) : '') 
+            + '</td></tr><tr><th scope="row">other tags</th><td>' + (feature.properties['other_tags'] !== null ? Autolinker.link(String(feature.properties['other_tags'])) : '') + '</td></tr></table>';
+            layer.bindPopup(popupContent);
+        }
+
+        function doStyleresidential3buildings(feature) {
+            return {
+                weight: 0,
+                color: '#f9f9f9',
+                fillColor: '#f0f465',
+                dashArray: '',
+                lineCap: 'square',
+                lineJoin: 'bevel',
+                opacity: 0.88,
+                fillOpacity: 0.88
+            };
+        }
+            var json_residential3buildingsJSON = new L.geoJson(json_residential3buildings, {
+                onEachFeature: pop_residential3buildings,
+                style: doStyleresidential3buildings
+            });
+            layerOrder[layerOrder.length] = json_residential3buildingsJSON;
+        bounds_group.addLayer(json_residential3buildingsJSON);
+        feature_group.addLayer(json_residential3buildingsJSON);
+
+
+
+        
+
+
+
+        function pop_neighborhoodcommercial(feature, layer) {
+            var popupContent = '<table><tr><th scope="row">osm id</th><td>' + (feature.properties['osm_id'] !== null ? Autolinker.link(String(feature.properties['osm_id'])) : '') 
+            + '</td></tr><tr><th scope="row">osm way id</th><td>' + (feature.properties['osm_way_id'] !== null ? Autolinker.link(String(feature.properties['osm_way_id'])) : '') 
+            + '</td></tr><tr><th scope="row">name</th><td>' + (feature.properties['name'] !== null ? Autolinker.link(String(feature.properties['name'])) : '') 
+            + '</td></tr><tr><th scope="row">type</th><td>' + (feature.properties['type'] !== null ? Autolinker.link(String(feature.properties['type'])) : '') 
+            + '</td></tr><tr><th scope="row">amenity</th><td>' + (feature.properties['amenity'] !== null ? Autolinker.link(String(feature.properties['amenity'])) : '') 
+            + '</td></tr><tr><th scope="row">building</th><td>' + (feature.properties['building'] !== null ? Autolinker.link(String(feature.properties['building'])) : '') 
+            + '</td></tr><tr><th scope="row">historic</th><td>' + (feature.properties['historic'] !== null ? Autolinker.link(String(feature.properties['historic'])) : '') 
+            + '</td></tr><tr><th scope="row">land area</th><td>' + (feature.properties['land_area'] !== null ? Autolinker.link(String(feature.properties['land_area'])) : '') 
+            + '</td></tr><tr><th scope="row">landuse</th><td>' + (feature.properties['landuse'] !== null ? Autolinker.link(String(feature.properties['landuse'])) : '') 
+            + '</td></tr><tr><th scope="row">natural</th><td>' + (feature.properties['natural'] !== null ? Autolinker.link(String(feature.properties['natural'])) : '') 
+            + '</td></tr><tr><th scope="row">other tags</th><td>' + (feature.properties['other_tags'] !== null ? Autolinker.link(String(feature.properties['other_tags'])) : '') + '</td></tr></table>';
+            layer.bindPopup(popupContent);
+        }
+
+        function doStyleneighborhoodcommercial(feature) {
+            return {
+                weight: 0,
+                color: '#fafafa',
+                fillColor: '#8ee9dc',
+                dashArray: '',
+                lineCap: 'square',
+                lineJoin: 'bevel',
+                opacity: 0.88,
+                fillOpacity: 0.88
+            };
+        }
+            var json_neighborhoodcommercialJSON = new L.geoJson(json_neighborhoodcommercial, {
+                onEachFeature: pop_neighborhoodcommercial,
+                style: doStyleneighborhoodcommercial
+            });
+            layerOrder[layerOrder.length] = json_neighborhoodcommercialJSON;
+        bounds_group.addLayer(json_neighborhoodcommercialJSON);
+        feature_group.addLayer(json_neighborhoodcommercialJSON);
+
+
+
+
+
+        function pop_highwaycommercial(feature, layer) {
+            var popupContent = '<table><tr><th scope="row">osm id</th><td>' + (feature.properties['osm_id'] !== null ? Autolinker.link(String(feature.properties['osm_id'])) : '') 
+            + '</td></tr><tr><th scope="row">osm way id</th><td>' + (feature.properties['osm_way_id'] !== null ? Autolinker.link(String(feature.properties['osm_way_id'])) : '') 
+            + '</td></tr><tr><th scope="row">name</th><td>' + (feature.properties['name'] !== null ? Autolinker.link(String(feature.properties['name'])) : '') 
+            + '</td></tr><tr><th scope="row">type</th><td>' + (feature.properties['type'] !== null ? Autolinker.link(String(feature.properties['type'])) : '') 
+            + '</td></tr><tr><th scope="row">amenity</th><td>' + (feature.properties['amenity'] !== null ? Autolinker.link(String(feature.properties['amenity'])) : '') 
+            + '</td></tr><tr><th scope="row">building</th><td>' + (feature.properties['building'] !== null ? Autolinker.link(String(feature.properties['building'])) : '') 
+            + '</td></tr><tr><th scope="row">historic</th><td>' + (feature.properties['historic'] !== null ? Autolinker.link(String(feature.properties['historic'])) : '') 
+            + '</td></tr><tr><th scope="row">land area</th><td>' + (feature.properties['land_area'] !== null ? Autolinker.link(String(feature.properties['land_area'])) : '') 
+            + '</td></tr><tr><th scope="row">landuse</th><td>' + (feature.properties['landuse'] !== null ? Autolinker.link(String(feature.properties['landuse'])) : '') 
+            + '</td></tr><tr><th scope="row">natural</th><td>' + (feature.properties['natural'] !== null ? Autolinker.link(String(feature.properties['natural'])) : '') 
+            + '</td></tr><tr><th scope="row">other tags</th><td>' + (feature.properties['other_tags'] !== null ? Autolinker.link(String(feature.properties['other_tags'])) : '') + '</td></tr></table>';
+            layer.bindPopup(popupContent);
+        }
+
+        function doStylehighwaycommercial(feature) {
+            return {
+                weight: 0,
+                color: '#ffffff',
+                fillColor: '#ffea5c',
+                dashArray: '',
+                lineCap: 'square',
+                lineJoin: 'bevel',
+                opacity: 0.94,
+                fillOpacity: 0.94
+            };
+        }
+            var json_highwaycommercialJSON = new L.geoJson(json_highwaycommercial, {
+                onEachFeature: pop_highwaycommercial,
+                style: doStylehighwaycommercial
+            });
+            layerOrder[layerOrder.length] = json_highwaycommercialJSON;
+        bounds_group.addLayer(json_highwaycommercialJSON);
+        feature_group.addLayer(json_highwaycommercialJSON);
+        
+
+
+
+
+
+
+        function pop_governmentbuildings(feature, layer) {
+            var popupContent = '<table><tr><th scope="row">osm id</th><td>' + (feature.properties['osm_id'] !== null ? Autolinker.link(String(feature.properties['osm_id'])) : '') 
+            + '</td></tr><tr><th scope="row">osm way id</th><td>' + (feature.properties['osm_way_id'] !== null ? Autolinker.link(String(feature.properties['osm_way_id'])) : '') 
+            + '</td></tr><tr><th scope="row">name</th><td>' + (feature.properties['name'] !== null ? Autolinker.link(String(feature.properties['name'])) : '') 
+            + '</td></tr><tr><th scope="row">type</th><td>' + (feature.properties['type'] !== null ? Autolinker.link(String(feature.properties['type'])) : '') 
+            + '</td></tr><tr><th scope="row">amenity</th><td>' + (feature.properties['amenity'] !== null ? Autolinker.link(String(feature.properties['amenity'])) : '') 
+            + '</td></tr><tr><th scope="row">building</th><td>' + (feature.properties['building'] !== null ? Autolinker.link(String(feature.properties['building'])) : '') 
+            + '</td></tr><tr><th scope="row">historic</th><td>' + (feature.properties['historic'] !== null ? Autolinker.link(String(feature.properties['historic'])) : '') 
+            + '</td></tr><tr><th scope="row">land area</th><td>' + (feature.properties['land_area'] !== null ? Autolinker.link(String(feature.properties['land_area'])) : '') 
+            + '</td></tr><tr><th scope="row">landuse</th><td>' + (feature.properties['landuse'] !== null ? Autolinker.link(String(feature.properties['landuse'])) : '') 
+            + '</td></tr><tr><th scope="row">natural</th><td>' + (feature.properties['natural'] !== null ? Autolinker.link(String(feature.properties['natural'])) : '') 
+            + '</td></tr><tr><th scope="row">other tags</th><td>' + (feature.properties['other_tags'] !== null ? Autolinker.link(String(feature.properties['other_tags'])) : '') + '</td></tr></table>';
+            layer.bindPopup(popupContent);
+        }
+
+        function doStylegovernmentbuildings(feature) {
+            return {
+                weight: 0,
+                color: '#fcfcfc',
+                fillColor: '#f0f465',
+                dashArray: '',
+                lineCap: 'square',
+                lineJoin: 'bevel',
+                opacity: 0.96,
+                fillOpacity: 0.96
+            };
+        }
+            var json_governmentbuildingsJSON = new L.geoJson(json_governmentbuildings, {
+                onEachFeature: pop_governmentbuildings,
+                style: doStylegovernmentbuildings
+            });
+            layerOrder[layerOrder.length] = json_governmentbuildingsJSON;
+        bounds_group.addLayer(json_governmentbuildingsJSON);
+        feature_group.addLayer(json_governmentbuildingsJSON);
+        
+
+
+
+
+
+
+        function pop_medicalbuildings(feature, layer) {
+            var popupContent = '<table><tr><th scope="row">osm id</th><td>' + (feature.properties['osm_id'] !== null ? Autolinker.link(String(feature.properties['osm_id'])) : '') 
+            + '</td></tr><tr><th scope="row">osm way id</th><td>' + (feature.properties['osm_way_id'] !== null ? Autolinker.link(String(feature.properties['osm_way_id'])) : '') 
+            + '</td></tr><tr><th scope="row">name</th><td>' + (feature.properties['name'] !== null ? Autolinker.link(String(feature.properties['name'])) : '') 
+            + '</td></tr><tr><th scope="row">type</th><td>' + (feature.properties['type'] !== null ? Autolinker.link(String(feature.properties['type'])) : '') 
+            + '</td></tr><tr><th scope="row">amenity</th><td>' + (feature.properties['amenity'] !== null ? Autolinker.link(String(feature.properties['amenity'])) : '') 
+            + '</td></tr><tr><th scope="row">building</th><td>' + (feature.properties['building'] !== null ? Autolinker.link(String(feature.properties['building'])) : '') 
+            + '</td></tr><tr><th scope="row">historic</th><td>' + (feature.properties['historic'] !== null ? Autolinker.link(String(feature.properties['historic'])) : '') 
+            + '</td></tr><tr><th scope="row">land area</th><td>' + (feature.properties['land_area'] !== null ? Autolinker.link(String(feature.properties['land_area'])) : '') 
+            + '</td></tr><tr><th scope="row">landuse</th><td>' + (feature.properties['landuse'] !== null ? Autolinker.link(String(feature.properties['landuse'])) : '') 
+            + '</td></tr><tr><th scope="row">natural</th><td>' + (feature.properties['natural'] !== null ? Autolinker.link(String(feature.properties['natural'])) : '') 
+            + '</td></tr><tr><th scope="row">other tags</th><td>' + (feature.properties['other_tags'] !== null ? Autolinker.link(String(feature.properties['other_tags'])) : '') + '</td></tr></table>';
+            layer.bindPopup(popupContent);
+        }
+
+        function doStylemedicalbuildings(feature) {
+            return {
+                weight: 0,
+                color: '#ffffff',
+                fillColor: '#ff8569',
+                dashArray: '',
+                lineCap: 'square',
+                lineJoin: 'bevel',
+                opacity: 0.86,
+                fillOpacity: 0.86
+            };
+        }
+            var json_medicalbuildingsJSON = new L.geoJson(json_medicalbuildings, {
+                onEachFeature: pop_medicalbuildings,
+                style: doStylemedicalbuildings
+            });
+            layerOrder[layerOrder.length] = json_medicalbuildingsJSON;
+        bounds_group.addLayer(json_medicalbuildingsJSON);
+        feature_group.addLayer(json_medicalbuildingsJSON);
+
+
+
+
+
+
+
+
+
+        function pop_beaconaveplanarea(feature, layer) {
+            var popupContent = '<table><tr><th scope="row">osm id</th><td>' + (feature.properties['osm_id'] !== null ? Autolinker.link(String(feature.properties['osm_id'])) : '') 
+            + '</td></tr><tr><th scope="row">osm way id</th><td>' + (feature.properties['osm_way_id'] !== null ? Autolinker.link(String(feature.properties['osm_way_id'])) : '') 
+            + '</td></tr><tr><th scope="row">name</th><td>' + (feature.properties['name'] !== null ? Autolinker.link(String(feature.properties['name'])) : '') 
+            + '</td></tr><tr><th scope="row">type</th><td>' + (feature.properties['type'] !== null ? Autolinker.link(String(feature.properties['type'])) : '') 
+            + '</td></tr><tr><th scope="row">building</th><td>' + (feature.properties['building'] !== null ? Autolinker.link(String(feature.properties['building'])) : '') 
+            + '</td></tr><tr><th scope="row">historic</th><td>' + (feature.properties['historic'] !== null ? Autolinker.link(String(feature.properties['historic'])) : '') 
+            + '</td></tr><tr><th scope="row">other tags</th><td>' + (feature.properties['other_tags'] !== null ? Autolinker.link(String(feature.properties['other_tags'])) : '') + '</td></tr></table>';
+            layer.bindPopup(popupContent);
+        }
+
+        function doStylebeaconaveplanarea(feature) {
+            return {
+                weight: 0,
+                color: '#fcfcfc',
+                fillColor: '#daf8ff',
+                dashArray: '',
+                lineCap: 'square',
+                lineJoin: 'bevel',
+                opacity: 0.88,
+                fillOpacity: 0.88
+            };
+        }
+            var json_beaconaveplanareaJSON = new L.geoJson(json_beaconaveplanarea, {
+                onEachFeature: pop_beaconaveplanarea,
+                style: doStylebeaconaveplanarea
+            });
+            layerOrder[layerOrder.length] = json_beaconaveplanareaJSON;
+        bounds_group.addLayer(json_beaconaveplanareaJSON);
+        feature_group.addLayer(json_beaconaveplanareaJSON);
+        
+
+
+
+
+
+
+
+
+
+        function pop_websteraveplanarea(feature, layer) {
+            var popupContent = '<table><tr><th scope="row">osm id</th><td>' + (feature.properties['osm_id'] !== null ? Autolinker.link(String(feature.properties['osm_id'])) : '') 
+            + '</td></tr><tr><th scope="row">osm way id</th><td>' + (feature.properties['osm_way_id'] !== null ? Autolinker.link(String(feature.properties['osm_way_id'])) : '') 
+            + '</td></tr><tr><th scope="row">name</th><td>' + (feature.properties['name'] !== null ? Autolinker.link(String(feature.properties['name'])) : '') 
+            + '</td></tr><tr><th scope="row">type</th><td>' + (feature.properties['type'] !== null ? Autolinker.link(String(feature.properties['type'])) : '') 
+            + '</td></tr><tr><th scope="row">amenity</th><td>' + (feature.properties['amenity'] !== null ? Autolinker.link(String(feature.properties['amenity'])) : '') 
+            + '</td></tr><tr><th scope="row">building</th><td>' + (feature.properties['building'] !== null ? Autolinker.link(String(feature.properties['building'])) : '') 
+            + '</td></tr><tr><th scope="row">historic</th><td>' + (feature.properties['historic'] !== null ? Autolinker.link(String(feature.properties['historic'])) : '') 
+            + '</td></tr><tr><th scope="row">land area</th><td>' + (feature.properties['land_area'] !== null ? Autolinker.link(String(feature.properties['land_area'])) : '') 
+            + '</td></tr><tr><th scope="row">landuse</th><td>' + (feature.properties['landuse'] !== null ? Autolinker.link(String(feature.properties['landuse'])) : '') 
+            + '</td></tr><tr><th scope="row">natural</th><td>' + (feature.properties['natural'] !== null ? Autolinker.link(String(feature.properties['natural'])) : '') 
+            + '</td></tr><tr><th scope="row">other tags</th><td>' + (feature.properties['other_tags'] !== null ? Autolinker.link(String(feature.properties['other_tags'])) : '') + '</td></tr></table>';
+            layer.bindPopup(popupContent);
+        }
+
+        function doStylewebsteraveplanarea(feature) {
+            return {
+                weight: 0,
+                color: '#fcfcfc',
+                fillColor: '#91c39e',
+                dashArray: '',
+                lineCap: 'square',
+                lineJoin: 'bevel',
+                opacity: 0.88,
+                fillOpacity: 0.88
+            };
+        }
+            var json_websteraveplanareaJSON = new L.geoJson(json_websteraveplanarea, {
+                onEachFeature: pop_websteraveplanarea,
+                style: doStylewebsteraveplanarea
+            });
+            layerOrder[layerOrder.length] = json_websteraveplanareaJSON;
+        bounds_group.addLayer(json_websteraveplanareaJSON);
+        feature_group.addLayer(json_websteraveplanareaJSON);
+        
+
+
+
+
+
+
+
+
+
+        function pop_hopkinscentralplanarea(feature, layer) {
+            var popupContent = '<table><tr><th scope="row">osm id</th><td>' + (feature.properties['osm_id'] !== null ? Autolinker.link(String(feature.properties['osm_id'])) : '') 
+            + '</td></tr><tr><th scope="row">osm way id</th><td>' + (feature.properties['osm_way_id'] !== null ? Autolinker.link(String(feature.properties['osm_way_id'])) : '') 
+            + '</td></tr><tr><th scope="row">name</th><td>' + (feature.properties['name'] !== null ? Autolinker.link(String(feature.properties['name'])) : '') 
+            + '</td></tr><tr><th scope="row">type</th><td>' + (feature.properties['type'] !== null ? Autolinker.link(String(feature.properties['type'])) : '') 
+            + '</td></tr><tr><th scope="row">amenity</th><td>' + (feature.properties['amenity'] !== null ? Autolinker.link(String(feature.properties['amenity'])) : '') 
+            + '</td></tr><tr><th scope="row">building</th><td>' + (feature.properties['building'] !== null ? Autolinker.link(String(feature.properties['building'])) : '') 
+            + '</td></tr><tr><th scope="row">historic</th><td>' + (feature.properties['historic'] !== null ? Autolinker.link(String(feature.properties['historic'])) : '') 
+            + '</td></tr><tr><th scope="row">land area</th><td>' + (feature.properties['land_area'] !== null ? Autolinker.link(String(feature.properties['land_area'])) : '') 
+            + '</td></tr><tr><th scope="row">landuse</th><td>' + (feature.properties['landuse'] !== null ? Autolinker.link(String(feature.properties['landuse'])) : '') 
+            + '</td></tr><tr><th scope="row">natural</th><td>' + (feature.properties['natural'] !== null ? Autolinker.link(String(feature.properties['natural'])) : '') 
+            + '</td></tr><tr><th scope="row">other tags</th><td>' + (feature.properties['other_tags'] !== null ? Autolinker.link(String(feature.properties['other_tags'])) : '') + '</td></tr></table>';
+            layer.bindPopup(popupContent);
+        }
+
+        function doStylehopkinscentralplanarea(feature) {
+            return {
+                weight: 0,
+                color: '#f8f8f8',
+                fillColor: '#d3b142',
+                dashArray: '',
+                lineCap: 'square',
+                lineJoin: 'bevel',
+                opacity: 0.88,
+                fillOpacity: 0.88
+            };
+        }
+            var json_hopkinscentralplanareaJSON = new L.geoJson(json_hopkinscentralplanarea, {
+                onEachFeature: pop_hopkinscentralplanarea,
+                style: doStylehopkinscentralplanarea
+            });
+            layerOrder[layerOrder.length] = json_hopkinscentralplanareaJSON;
+        bounds_group.addLayer(json_hopkinscentralplanareaJSON);
+        feature_group.addLayer(json_hopkinscentralplanareaJSON);
+
+        
+
+
+
+
+
+
+
+function pop_otherbuildings(feature, layer) {
+            var popupContent = '<table><tr><th scope="row">osm id</th><td>' + (feature.properties['osm_id'] !== null ? Autolinker.link(String(feature.properties['osm_id'])) : '') 
+            + '</td></tr><tr><th scope="row">osm way id</th><td>' + (feature.properties['osm_way_id'] !== null ? Autolinker.link(String(feature.properties['osm_way_id'])) : '') 
+            + '</td></tr><tr><th scope="row">name</th><td>' + (feature.properties['name'] !== null ? Autolinker.link(String(feature.properties['name'])) : '') 
+            + '</td></tr><tr><th scope="row">type</th><td>' + (feature.properties['type'] !== null ? Autolinker.link(String(feature.properties['type'])) : '') 
+            + '</td></tr><tr><th scope="row">amenity</th><td>' + (feature.properties['amenity'] !== null ? Autolinker.link(String(feature.properties['amenity'])) : '') 
+            + '</td></tr><tr><th scope="row">building</th><td>' + (feature.properties['building'] !== null ? Autolinker.link(String(feature.properties['building'])) : '') 
+            + '</td></tr><tr><th scope="row">historic</th><td>' + (feature.properties['historic'] !== null ? Autolinker.link(String(feature.properties['historic'])) : '') 
+            + '</td></tr><tr><th scope="row">land use</th><td>' + (feature.properties['landuse'] !== null ? Autolinker.link(String(feature.properties['landuse'])) : '') 
+            + '</td></tr><tr><th scope="row">other tags</th><td>' + (feature.properties['other_tags'] !== null ? Autolinker.link(String(feature.properties['other_tags'])) : '') 
+            + '</td></tr></table>';
+            layer.bindPopup(popupContent);
+        }
+
+        function doStyleotherbuildings(feature) {
+            return {
+                weight: 0,
+                color: '#fcfcfc',
+                fillColor: '#a6c3d0',
+                dashArray: '',
+                lineCap: 'square',
+                lineJoin: 'bevel',
+                opacity: 0.88,
+                fillOpacity: 0.88
+            };
+        }
+            var json_otherbuildingsJSON = new L.geoJson(json_otherbuildings, {
+                onEachFeature: pop_otherbuildings,
+                style: doStyleotherbuildings
+            });
+            layerOrder[layerOrder.length] = json_otherbuildingsJSON;
+        bounds_group.addLayer(json_otherbuildingsJSON);
+        feature_group.addLayer(json_otherbuildingsJSON);
+        
+
+
+
+
+
+
+function pop_sheds(feature, layer) {
+            var popupContent = '<table><tr><th scope="row">osm id</th><td>' + (feature.properties['osm_id'] !== null ? Autolinker.link(String(feature.properties['osm_id'])) : '') 
+            + '</td></tr><tr><th scope="row">osm way id</th><td>' + (feature.properties['osm_way_id'] !== null ? Autolinker.link(String(feature.properties['osm_way_id'])) : '') 
+            + '</td></tr><tr><th scope="row">name</th><td>' + (feature.properties['name'] !== null ? Autolinker.link(String(feature.properties['name'])) : '') 
+            + '</td></tr><tr><th scope="row">type</th><td>' + (feature.properties['type'] !== null ? Autolinker.link(String(feature.properties['type'])) : '') 
+            + '</td></tr><tr><th scope="row">amenity</th><td>' + (feature.properties['amenity'] !== null ? Autolinker.link(String(feature.properties['amenity'])) : '') 
+            + '</td></tr><tr><th scope="row">building</th><td>' + (feature.properties['building'] !== null ? Autolinker.link(String(feature.properties['building'])) : '') 
+            + '</td></tr><tr><th scope="row">historic</th><td>' + (feature.properties['historic'] !== null ? Autolinker.link(String(feature.properties['historic'])) : '') 
+            + '</td></tr><tr><th scope="row">landuse</th><td>' + (feature.properties['landuse'] !== null ? Autolinker.link(String(feature.properties['landuse'])) : '') 
+            + '</td></tr><tr><th scope="row">leisure</th><td>' + (feature.properties['leisure'] !== null ? Autolinker.link(String(feature.properties['leisure'])) : '') 
+            + '</td></tr><tr><th scope="row">other tags</th><td>' + (feature.properties['other_tags'] !== null ? Autolinker.link(String(feature.properties['other_tags'])) : '') + '</td></tr></table>';
+            layer.bindPopup(popupContent);
+        }
+
+        function doStylesheds(feature) {
+            return {
+                weight: 0,
+                color: '#f7f7f7',
+                fillColor: '#c5bec7',
+                dashArray: '',
+                lineCap: 'square',
+                lineJoin: 'bevel',
+                opacity: 0.88,
+                fillOpacity: 0.88
+            };
+        }
+            var json_shedsJSON = new L.geoJson(json_sheds, {
+                onEachFeature: pop_sheds,
+                style: doStylesheds
+            });
+            layerOrder[layerOrder.length] = json_shedsJSON;
+        bounds_group.addLayer(json_shedsJSON);
+        feature_group.addLayer(json_shedsJSON);
+
+
+
+
+
+
+        function pop_pools(feature, layer) {
+            var popupContent = '<table><tr><th scope="row">osm id</th><td>' + (feature.properties['osm_id'] !== null ? Autolinker.link(String(feature.properties['osm_id'])) : '') 
+            + '</td></tr><tr><th scope="row">osm way id</th><td>' + (feature.properties['osm_way_id'] !== null ? Autolinker.link(String(feature.properties['osm_way_id'])) : '') 
+            + '</td></tr><tr><th scope="row">name</th><td>' + (feature.properties['name'] !== null ? Autolinker.link(String(feature.properties['name'])) : '') 
+            + '</td></tr><tr><th scope="row">type</th><td>' + (feature.properties['type'] !== null ? Autolinker.link(String(feature.properties['type'])) : '') 
+            + '</td></tr><tr><th scope="row">amenity</th><td>' + (feature.properties['amenity'] !== null ? Autolinker.link(String(feature.properties['amenity'])) : '') 
+            + '</td></tr><tr><th scope="row">building</th><td>' + (feature.properties['building'] !== null ? Autolinker.link(String(feature.properties['building'])) : '') 
+            + '</td></tr><tr><th scope="row">craft</th><td>' + (feature.properties['craft'] !== null ? Autolinker.link(String(feature.properties['craft'])) : '') 
+            + '</td></tr><tr><th scope="row">geological</th><td>' + (feature.properties['geological'] !== null ? Autolinker.link(String(feature.properties['geological'])) : '') 
+            + '</td></tr><tr><th scope="row">historic</th><td>' + (feature.properties['historic'] !== null ? Autolinker.link(String(feature.properties['historic'])) : '') 
+            + '</td></tr><tr><th scope="row">landuse</th><td>' + (feature.properties['landuse'] !== null ? Autolinker.link(String(feature.properties['landuse'])) : '') 
+            + '</td></tr><tr><th scope="row">leisure</th><td>' + (feature.properties['leisure'] !== null ? Autolinker.link(String(feature.properties['leisure'])) : '') 
+            + '</td></tr><tr><th scope="row">other tags</th><td>' + (feature.properties['other_tags'] !== null ? Autolinker.link(String(feature.properties['other_tags'])) : '') + '</td></tr></table>';
+            layer.bindPopup(popupContent);
+        }
+
+        function doStylepools(feature) {
+            return {
+                weight: 0,
+                color: '#ffffff',
+                fillColor: '#3b9ed4',
+                dashArray: '',
+                lineCap: 'square',
+                lineJoin: 'bevel',
+                opacity: 0.88,
+                fillOpacity: 0.88
+            };
+        }
+            var json_poolsJSON = new L.geoJson(json_pools, {
+                onEachFeature: pop_pools,
+                style: doStylepools
+            });
+            layerOrder[layerOrder.length] = json_poolsJSON;
+        bounds_group.addLayer(json_poolsJSON);
+        feature_group.addLayer(json_poolsJSON);
+        
+
+
+
+
+
+
+
+        function pop_parking(feature, layer) {
+            var popupContent = '<table><tr><th scope="row">osm id</th><td>' + (feature.properties['osm_id'] !== null ? Autolinker.link(String(feature.properties['osm_id'])) : '') 
+            + '</td></tr><tr><th scope="row">osm way id</th><td>' + (feature.properties['osm_way_id'] !== null ? Autolinker.link(String(feature.properties['osm_way_id'])) : '') 
+            + '</td></tr><tr><th scope="row">name</th><td>' + (feature.properties['name'] !== null ? Autolinker.link(String(feature.properties['name'])) : '') 
+            + '</td></tr><tr><th scope="row">type</th><td>' + (feature.properties['type'] !== null ? Autolinker.link(String(feature.properties['type'])) : '') 
+            + '</td></tr><tr><th scope="row">amenity</th><td>' + (feature.properties['amenity'] !== null ? Autolinker.link(String(feature.properties['amenity'])) : '') 
+            + '</td></tr><tr><th scope="row">building</th><td>' + (feature.properties['building'] !== null ? Autolinker.link(String(feature.properties['building'])) : '') 
+            + '</td></tr><tr><th scope="row">historic</th><td>' + (feature.properties['historic'] !== null ? Autolinker.link(String(feature.properties['historic'])) : '') 
+            + '</td></tr><tr><th scope="row">land use</th><td>' + (feature.properties['landuse'] !== null ? Autolinker.link(String(feature.properties['landuse'])) : '') 
+            + '</td></tr><tr><th scope="row">leisure</th><td>' + (feature.properties['leisure'] !== null ? Autolinker.link(String(feature.properties['leisure'])) : '') 
+            + '</td></tr><tr><th scope="row">other tags</th><td>' + (feature.properties['other_tags'] !== null ? Autolinker.link(String(feature.properties['other_tags'])) : '') 
+            + '</td></tr></table>';
+            layer.bindPopup(popupContent);
+        }
+
+        function doStyleparking(feature) {
+            return {
+                weight: 0,
+                color: '#ffffff',
+                fillColor: '#e8e8e8',
+                dashArray: '',
+                lineCap: 'square',
+                lineJoin: 'bevel',
+                opacity: 0.88,
+                fillOpacity: 0.88
+            };
+        }
+            var json_parkingJSON = new L.geoJson(json_parking, {
+                onEachFeature: pop_parking,
+                style: doStyleparking
+            });
+            layerOrder[layerOrder.length] = json_parkingJSON;
+        bounds_group.addLayer(json_parkingJSON);
+        feature_group.addLayer(json_parkingJSON);
+        
+
+
+
+
+
+
+
+        function pop_reservoir(feature, layer) {
+            var popupContent = '<table><tr><th scope="row">osm id</th><td>' + (feature.properties['osm_id'] !== null ? Autolinker.link(String(feature.properties['osm_id'])) : '') 
+            + '</td></tr><tr><th scope="row">osm way id</th><td>' + (feature.properties['osm_way_id'] !== null ? Autolinker.link(String(feature.properties['osm_way_id'])) : '') 
+            + '</td></tr><tr><th scope="row">name</th><td>' + (feature.properties['name'] !== null ? Autolinker.link(String(feature.properties['name'])) : '') 
+            + '</td></tr><tr><th scope="row">type</th><td>' + (feature.properties['type'] !== null ? Autolinker.link(String(feature.properties['type'])) : '') 
+            + '</td></tr><tr><th scope="row">amenity</th><td>' + (feature.properties['amenity'] !== null ? Autolinker.link(String(feature.properties['amenity'])) : '') 
+            + '</td></tr><tr><th scope="row">building</th><td>' + (feature.properties['building'] !== null ? Autolinker.link(String(feature.properties['building'])) : '') 
+            + '</td></tr><tr><th scope="row">historic</th><td>' + (feature.properties['historic'] !== null ? Autolinker.link(String(feature.properties['historic'])) : '') 
+            + '</td></tr><tr><th scope="row">landuse</th><td>' + (feature.properties['landuse'] !== null ? Autolinker.link(String(feature.properties['landuse'])) : '') 
+            + '</td></tr><tr><th scope="row">leisure</th><td>' + (feature.properties['leisure'] !== null ? Autolinker.link(String(feature.properties['leisure'])) : '') 
+            + '</td></tr><tr><th scope="row">other tags</th><td>' + (feature.properties['other_tags'] !== null ? Autolinker.link(String(feature.properties['other_tags'])) : '') + '</td></tr></table>';
+            layer.bindPopup(popupContent);
+        }
+
+        function doStylereservoir(feature) {
+            return {
+                weight: 0,
+                color: '#ffffff',
+                fillColor: '#3399d5',
+                dashArray: '',
+                lineCap: 'square',
+                lineJoin: 'bevel',
+                opacity: 0.82,
+                fillOpacity: 0.82
+            };
+        }
+            var json_reservoirJSON = new L.geoJson(json_reservoir, {
+                onEachFeature: pop_reservoir,
+                style: doStylereservoir
+            });
+            layerOrder[layerOrder.length] = json_reservoirJSON;
+        bounds_group.addLayer(json_reservoirJSON);
+        feature_group.addLayer(json_reservoirJSON);
+        
+
+
+
+
+
+
+
+        function pop_parks(feature, layer) {
+            var popupContent = '<table><tr><th scope="row">osm id</th><td>' + (feature.properties['osm_id'] !== null ? Autolinker.link(String(feature.properties['osm_id'])) : '') 
+            + '</td></tr><tr><th scope="row">osm way id</th><td>' + (feature.properties['osm_way_id'] !== null ? Autolinker.link(String(feature.properties['osm_way_id'])) : '') 
+            + '</td></tr><tr><th scope="row">name</th><td>' + (feature.properties['name'] !== null ? Autolinker.link(String(feature.properties['name'])) : '') 
+            + '</td></tr><tr><th scope="row">type</th><td>' + (feature.properties['type'] !== null ? Autolinker.link(String(feature.properties['type'])) : '') 
+            + '</td></tr><tr><th scope="row">amenity</th><td>' + (feature.properties['amenity'] !== null ? Autolinker.link(String(feature.properties['amenity'])) : '') 
+            + '</td></tr><tr><th scope="row">building</th><td>' + (feature.properties['building'] !== null ? Autolinker.link(String(feature.properties['building'])) : '') 
+            + '</td></tr><tr><th scope="row">historic</th><td>' + (feature.properties['historic'] !== null ? Autolinker.link(String(feature.properties['historic'])) : '') 
+            + '</td></tr><tr><th scope="row">landuse</th><td>' + (feature.properties['landuse'] !== null ? Autolinker.link(String(feature.properties['landuse'])) : '') 
+            + '</td></tr><tr><th scope="row">leisure</th><td>' + (feature.properties['leisure'] !== null ? Autolinker.link(String(feature.properties['leisure'])) : '') 
+            + '</td></tr><tr><th scope="row">other tags</th><td>' + (feature.properties['other_tags'] !== null ? Autolinker.link(String(feature.properties['other_tags'])) : '') + '</td></tr></table>';
+            layer.bindPopup(popupContent);
+        }
+
+        function doStyleparks(feature) {
+            return {
+                weight: 0,
+                color: '#fcfcfc',
+                fillColor: '#9ee344',
+                dashArray: '',
+                lineCap: 'square',
+                lineJoin: 'bevel',
+                opacity: 0.8,
+                fillOpacity: 0.8
+            };
+        }
+            var json_parksJSON = new L.geoJson(json_parks, {
+                onEachFeature: pop_parks,
+                style: doStyleparks
+            });
+            layerOrder[layerOrder.length] = json_parksJSON;
+        bounds_group.addLayer(json_parksJSON);
+        feature_group.addLayer(json_parksJSON);
+        
+
+
+
+
+
+
+        function pop_fields(feature, layer) {
+            var popupContent = '<table><tr><th scope="row">osm id</th><td>' + (feature.properties['osm_id'] !== null ? Autolinker.link(String(feature.properties['osm_id'])) : '') 
+            + '</td></tr><tr><th scope="row">osm way id</th><td>' + (feature.properties['osm_way_id'] !== null ? Autolinker.link(String(feature.properties['osm_way_id'])) : '') 
+            + '</td></tr><tr><th scope="row">name</th><td>' + (feature.properties['name'] !== null ? Autolinker.link(String(feature.properties['name'])) : '') 
+            + '</td></tr><tr><th scope="row">type</th><td>' + (feature.properties['type'] !== null ? Autolinker.link(String(feature.properties['type'])) : '') 
+            + '</td></tr><tr><th scope="row">aeroway</th><td>' + (feature.properties['aeroway'] !== null ? Autolinker.link(String(feature.properties['aeroway'])) : '') 
+            + '</td></tr><tr><th scope="row">amenity</th><td>' + (feature.properties['amenity'] !== null ? Autolinker.link(String(feature.properties['amenity'])) : '') 
+            + '</td></tr><tr><th scope="row">building</th><td>' + (feature.properties['building'] !== null ? Autolinker.link(String(feature.properties['building'])) : '') 
+            + '</td></tr><tr><th scope="row">historic</th><td>' + (feature.properties['historic'] !== null ? Autolinker.link(String(feature.properties['historic'])) : '') 
+            + '</td></tr><tr><th scope="row">landuse</th><td>' + (feature.properties['landuse'] !== null ? Autolinker.link(String(feature.properties['landuse'])) : '') 
+            + '</td></tr><tr><th scope="row">leisure</th><td>' + (feature.properties['leisure'] !== null ? Autolinker.link(String(feature.properties['leisure'])) : '') 
+            + '</td></tr><tr><th scope="row">other tags</th><td>' + (feature.properties['other_tags'] !== null ? Autolinker.link(String(feature.properties['other_tags'])) : '') + '</td></tr></table>';
+            layer.bindPopup(popupContent);
+        }
+
+        function doStylefields(feature) {
+            return {
+                weight: 0.2,
+                color: '#ffffff',
+                fillColor: '#9ef962',
+                dashArray: '10,5',
+                lineCap: 'square',
+                lineJoin: 'bevel',
+                opacity: 1.0,
+                fillOpacity: 1.0
+            };
+        }
+            var json_fieldsJSON = new L.geoJson(json_fields, {
+                onEachFeature: pop_fields,
+                style: doStylefields
+            });
+            layerOrder[layerOrder.length] = json_fieldsJSON;
+        bounds_group.addLayer(json_fieldsJSON);
+        feature_group.addLayer(json_fieldsJSON);
+        
+
+
+
+        
+
+
+
+        function doStyleother(feature) {
+            switch (feature.properties.landuse) {
+                default:
+                    return {
+                    weight: '0.0',
+                    fillColor: '#e8e8e8',
+                    color: 'none',
+                    dashArray: '',
+                    lineCap: 'butt',
+                    lineJoin: 'miter',
+                    opacity: '0.8',
+                    fillOpacity: '0.8',
+                };
+                break;
+
+                case 'cemetery':
+                    return {
+                    weight: '0.0',
+                    fillColor: '#bafc69',
+                    color: 'none',
+                    dashArray: '',
+                    lineCap: 'butt',
+                    lineJoin: 'miter',
+                    opacity: '0.8',
+                    fillOpacity: '0.8',
+                };
+                break;
+
+                case 'construction':
+                    return {
+                    weight: '0.0',
+                    fillColor: '#9bafb3',
+                    color: 'none',
+                    dashArray: '',
+                    lineCap: 'butt',
+                    lineJoin: 'miter',
+                    opacity: '0.8',
+                    fillOpacity: '0.8',
+                };
+                break;
+
+                case 'forest':
+                    return {
+                    weight: '0.0',
+                    fillColor: '#cfe719',
+                    color: 'none',
+                    dashArray: '',
+                    lineCap: 'butt',
+                    lineJoin: 'miter',
+                    opacity: '0.8',
+                    fillOpacity: '0.8',
+                };
+                break;
+
+                case 'industrial':
+                    return {
+                    weight: '0.0',
+                    fillColor: '#ffac3a',
+                    color: 'none',
+                    dashArray: '',
+                    lineCap: 'butt',
+                    lineJoin: 'miter',
+                    opacity: '0.8',
+                    fillOpacity: '0.8',
+                };
+                break;
+
+                case 'meadow':
+                    return {
+                    weight: '0.0',
+                    fillColor: '#9ddf19',
+                    color: 'none',
+                    dashArray: '',
+                    lineCap: 'butt',
+                    lineJoin: 'miter',
+                    opacity: '0.8',
+                    fillOpacity: '0.8',
+                };
+                break;
+
+            }
+        }
+            var json_otherJSON = new L.geoJson(json_other, {
+                onEachFeature: pop_other,
+                style: doStyleother
+            });
+            layerOrder[layerOrder.length] = json_otherJSON;
+        bounds_group.addLayer(json_otherJSON);
+        feature_group.addLayer(json_otherJSON);
+
+
+
+
+        raster_group.addTo(map);
+        feature_group.addTo(map);
+    var baseMaps = {'Stamen Toner': basemap0};
+        L.control.layers(baseMaps,{
+            '<img src="legend/residential1buildings.png" /> residential-1 buildings': json_residential1buildingsJSON,
+            '<img src="legend/residential1Abuildings.png" /> residential-1A buildings': json_residential1AbuildingsJSON,
+            '<img src="legend/residential2buildings.png" /> residential-2 buildings': json_residential2buildingsJSON,
+            '<img src="legend/residential3buildings.png" /> residential-3 buildings': json_residential3buildingsJSON,
+            '<img src="legend/neighborhoodcommercial.png" /> neighborhood commercial': json_neighborhoodcommercialJSON,
+            '<img src="legend/medicalbuildings.png" /> medical buildings': json_medicalbuildingsJSON,
+            '<img src="legend/governmentbuildings.png" /> government buildings': json_governmentbuildingsJSON,
+            '<img src="legend/highwaycommercial.png" /> highway commercial': json_highwaycommercialJSON,
+            '<img src="legend/hopkinscentralplanarea.png" /> <a href="http://www.cityofjerseycity.com/uploadedFiles/Data/38%20Hopkins%20and%20Central.pdf" target="_blank">hopkins central plan area</a>': json_hopkinscentralplanareaJSON,
+            '<img src="legend/websteraveplanarea.png" /> <a href="http://www.cityofjerseycity.com/uploadedFiles/Data/82%20Webster%20Avenue.pdf" target="_blank">webster ave plan area</a>': json_websteraveplanareaJSON,
+            '<img src="legend/beaconaveplanarea.png" /> <a href="http://www.cityofjerseycity.com/uploadedFiles/Data/5%20Beacon%20Avenue.pdf" target="_blank">beacon ave plan area</a>': json_beaconaveplanareaJSON,
+            '<img src="legend/otherbuildings.png" /> other buildings': json_otherbuildingsJSON,
+            '<img src="legend/sheds.png" /> sheds': json_shedsJSON,
+            '<img src="legend/pools.png" /> pools': json_poolsJSON,
+            '<img src="legend/fields.png" /> fields': json_fieldsJSON,
+            '<img src="legend/parks.png" /> parks': json_parksJSON,
+            '<img src="legend/reservoir.png" /> reservoir': json_reservoirJSON,
+            '<img src="legend/parking.png" /> parking': json_parkingJSON,
+            'other landuses<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src="legend/other_cemetery.png" /> cemetery<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src="legend/other_construction.png" /> construction<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src="legend/other_forest.png" /> forest<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src="legend/other_industrial.png" /> industrial<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src="legend/other_meadow.png" /> meadow<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src="legend/other_other.png" /> other<br />': json_otherJSON,},{collapsed:false}).addTo(map);
+        stackLayers();
+    </script>
+    
+    
+  </body>
+</html>
