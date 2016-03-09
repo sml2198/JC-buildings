@@ -947,22 +947,6 @@ function pop_sheds(feature, layer) {
         bounds_group.addLayer(json_otherJSON);
         feature_group.addLayer(json_otherJSON);
 
-  var circle = L.circle([40.746666, -74.048951], 500, {
-      color: 'red',
-      fillColor: '#f03',
-      fillOpacity: 0.5
-  }).addTo(mymap);
-  circle.bindPopup("I am a circle.");
-  
-  var popup = L.popup();
-  function onMapClick(e) {
-      popup
-          .setLatLng(e.latlng)
-          .setContent("You clicked " + e.latlng.toString())
-          .openOn(mymap);
-  }
-  mymap.on('click', onMapClick);
-
         raster_group.addTo(map);
         feature_group.addTo(map);
     var baseMaps = {'Stamen Toner': basemap0};
