@@ -563,46 +563,6 @@
         feature_group.addLayer(json_hopkinscentralplanareaJSON);
 
         
-
-
-
-
-
-
-
-function pop_otherbuildings(feature, layer) {
-            var popupContent = '<table><tr><th scope="row">osm id</th><td>' + (feature.properties['osm_id'] !== null ? Autolinker.link(String(feature.properties['osm_id'])) : '') 
-            + '</td></tr><tr><th scope="row">osm way id</th><td>' + (feature.properties['osm_way_id'] !== null ? Autolinker.link(String(feature.properties['osm_way_id'])) : '') 
-            + '</td></tr><tr><th scope="row">name</th><td>' + (feature.properties['name'] !== null ? Autolinker.link(String(feature.properties['name'])) : '') 
-            + '</td></tr><tr><th scope="row">type</th><td>' + (feature.properties['type'] !== null ? Autolinker.link(String(feature.properties['type'])) : '') 
-            + '</td></tr><tr><th scope="row">amenity</th><td>' + (feature.properties['amenity'] !== null ? Autolinker.link(String(feature.properties['amenity'])) : '') 
-            + '</td></tr><tr><th scope="row">building</th><td>' + (feature.properties['building'] !== null ? Autolinker.link(String(feature.properties['building'])) : '') 
-            + '</td></tr><tr><th scope="row">historic</th><td>' + (feature.properties['historic'] !== null ? Autolinker.link(String(feature.properties['historic'])) : '') 
-            + '</td></tr><tr><th scope="row">land use</th><td>' + (feature.properties['landuse'] !== null ? Autolinker.link(String(feature.properties['landuse'])) : '') 
-            + '</td></tr><tr><th scope="row">other tags</th><td>' + (feature.properties['other_tags'] !== null ? Autolinker.link(String(feature.properties['other_tags'])) : '') 
-            + '</td></tr></table>';
-            layer.bindPopup(popupContent);
-        }
-
-        function doStyleotherbuildings(feature) {
-            return {
-                weight: 0,
-                color: '#fcfcfc',
-                fillColor: '#a6c3d0',
-                dashArray: '',
-                lineCap: 'square',
-                lineJoin: 'bevel',
-                opacity: 0.88,
-                fillOpacity: 0.88
-            };
-        }
-            var json_otherbuildingsJSON = new L.geoJson(json_otherbuildings, {
-                onEachFeature: pop_otherbuildings,
-                style: doStyleotherbuildings
-            });
-            layerOrder[layerOrder.length] = json_otherbuildingsJSON;
-        bounds_group.addLayer(json_otherbuildingsJSON);
-        feature_group.addLayer(json_otherbuildingsJSON);
         
 
 
@@ -946,6 +906,46 @@ function pop_sheds(feature, layer) {
             layerOrder[layerOrder.length] = json_otherJSON;
         bounds_group.addLayer(json_otherJSON);
         feature_group.addLayer(json_otherJSON);
+        
+        
+  function pop_otherbuildings(feature, layer) {
+            var popupContent = '<table><tr><th scope="row">osm id</th><td>' + (feature.properties['osm_id'] !== null ? Autolinker.link(String(feature.properties['osm_id'])) : '') 
+            + '</td></tr><tr><th scope="row">osm way id</th><td>' + (feature.properties['osm_way_id'] !== null ? Autolinker.link(String(feature.properties['osm_way_id'])) : '') 
+            + '</td></tr><tr><th scope="row">name</th><td>' + (feature.properties['name'] !== null ? Autolinker.link(String(feature.properties['name'])) : '') 
+            + '</td></tr><tr><th scope="row">type</th><td>' + (feature.properties['type'] !== null ? Autolinker.link(String(feature.properties['type'])) : '') 
+            + '</td></tr><tr><th scope="row">amenity</th><td>' + (feature.properties['amenity'] !== null ? Autolinker.link(String(feature.properties['amenity'])) : '') 
+            + '</td></tr><tr><th scope="row">building</th><td>' + (feature.properties['building'] !== null ? Autolinker.link(String(feature.properties['building'])) : '') 
+            + '</td></tr><tr><th scope="row">historic</th><td>' + (feature.properties['historic'] !== null ? Autolinker.link(String(feature.properties['historic'])) : '') 
+            + '</td></tr><tr><th scope="row">land use</th><td>' + (feature.properties['landuse'] !== null ? Autolinker.link(String(feature.properties['landuse'])) : '') 
+            + '</td></tr><tr><th scope="row">other tags</th><td>' + (feature.properties['other_tags'] !== null ? Autolinker.link(String(feature.properties['other_tags'])) : '') 
+            + '</td></tr></table>';
+            layer.bindPopup(popupContent);
+        }
+
+        function doStyleotherbuildings(feature) {
+            return {
+                weight: 0,
+                color: '#fcfcfc',
+                fillColor: '#a6c3d0',
+                dashArray: '',
+                lineCap: 'square',
+                lineJoin: 'bevel',
+                opacity: 0.88,
+                fillOpacity: 0.88
+            };
+        }
+            var json_otherbuildingsJSON = new L.geoJson(json_otherbuildings, {
+                onEachFeature: pop_otherbuildings,
+                style: doStyleotherbuildings
+            });
+            layerOrder[layerOrder.length] = json_otherbuildingsJSON;
+        bounds_group.addLayer(json_otherbuildingsJSON);
+        feature_group.addLayer(json_otherbuildingsJSON);
+        
+        
+        
+        
+        
 
         raster_group.addTo(map);
         feature_group.addTo(map);
