@@ -7,60 +7,17 @@
     <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v0.20.1/mapbox-gl.js'></script>
     <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v0.20.1/mapbox-gl.css' rel='stylesheet' />
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-	<link rel="stylesheet" type="text/css" href="css/style.css">
-	<link rel="stylesheet" type="text/css" href="css/demo-style.css">
-	<link rel="stylesheet" type="text/css" href="css/introjs.css">
-	<script type="text/javascript" src="http://demo.hongkiat.com/_nav/js/nav.js"></script>
-	<script type="text/javascript" src="js/intro.js"></script>
-	    <style>
+    <link rel="stylesheet" type="text/css" href="css/style.css">
+    <link rel="stylesheet" type="text/css" href="css/demo-style.css">
+    <link rel="stylesheet" type="text/css" href="css/introjs.css">
+    <script type="text/javascript" src="http://demo.hongkiat.com/_nav/js/nav.js"></script>
+    <script type="text/javascript" src="js/intro.js"></script>
+        <style>
         body { margin:0; padding:0; }
         #map { position:absolute; top:0; bottom:0; width:100%; }
     </style>
 </head>
-
 <body>
-
-<style>
-    #menu {
-        position: absolute;
-        background: rgba(255, 255, 255, 0.7);
-        padding: 5px;
-    	font-family: Arial, sans-serif;        
-    	font-size: 75%;
-        border-radius: 3px;
-    }
-    #attribution {
-        position: absolute;
-	    bottom: 0;
-	    left: 0;
-        background: rgba(255, 255, 255, 0.7);
-        padding: 5px;
-    	font-family: Arial, sans-serif;        
-    	font-size: 70%;
-        border-radius: 3px;
-    }
-	#tourbtn {
-	  position: fixed;
-	  right: 15px;
-	  bottom: 35px;
-	}
-	#tourbtn a {
-	  background: #bac081;
-	  padding: 8px 15px;
-	  font-size: 12px;
-	  line-height: 22px;
-	  font-weight: bold;
-	  color: #454a50;
-	  text-decoration: none;
-	  -webkit-border-radius: 4px;
-	  -moz-border-radius: 4px;
-	  border-radius: 4px;
-	}
-	#tourbtn a:hover {
-	  background: #cacf96;
-	}
-
-</style>
 
 <div id='map'></div>
 <div id='menu'>
@@ -69,94 +26,45 @@
     <input id='cipvt15bo000rbcnmiw8li64d' type='radio' name='rtoggle' value='cipvt15bo000rbcnmiw8li64d'>
     <label for='cipvt15bo000rbcnmiw8li64d'>satellite</label>
 </div>
+<div class='map-overlay' id='features'><h2>JERSEY CITY <br>BUILDING CENSUS</h2>
+    <div id='pd'><p><i>A sort of love letter by Sarah Michael Levine.</i></p><p>Hover over a building for zone and parcel information.</p></div></div>
+<div class='map-overlay' id='legend'><strong>Zone Types</strong></div>
 <div id='attribution'>
-   © <a href= "http://www.sarahmakesmaps.com">Sarah Michael Levine</a>
+   © <a href= "http://www.sarahmakesmaps.com" target = "_blank">sarahmakesmaps.com</a>
 </div>
 
-<script>
-mapboxgl.accessToken = 'pk.eyJ1Ijoic2FyYWhtbGV2aW5lIiwiYSI6IlAweXNYVEUifQ._dz0522LtBABUYyfqP503Q';
-
-var bounds = [
-    [-74.116039, 40.684505], 
-    [-74.019823, 40.760222]  
-];
-
-var map = new mapboxgl.Map({
-    container: 'map',
-    style: 'mapbox://styles/sarahmlevine/ciprs62gb001hbakwz4xu2dbh',
-    zoom: 14,
-    minZoom: 14,
-    center: [-74.06291,40.714275],
-    pitch: 55, // pitch in degrees
-    bearing: -35, // bearing in degrees
-    maxBounds: bounds
-});
-
-var layerList = document.getElementById('menu');
-var inputs = layerList.getElementsByTagName('input');
-
-function switchLayer(layer) {
-    var layerId = layer.target.id;
-    map.setStyle('mapbox://styles/sarahmlevine/' + layerId );
-}
-
-for (var i = 0; i < inputs.length; i++) {
-    inputs[i].onclick = switchLayer;
-}
-
-map.on('load', function() {
-
-  var layers = ['Residential', 'Commercial', 'Industrial', 'Government', 'Medical', 'Special', 'Historic', 'Open Space', 'University'];
-
-    layers.forEach(function(layer) {;
-      var color = map.getPaintProperty(layer, 'fill-color');
-      var item = document.createElement('div');
-      var key = document.createElement('span');
-      key.className = 'legend-key';
-      key.style.backgroundColor = color;
-
-      var value = document.createElement('span');
-      value.innerHTML = layer;
-      item.appendChild(key);
-      item.appendChild(value);
-      legend.appendChild(item);
-    });
-
-    map.on('mousemove', function (e) {
-      var states = map.queryRenderedFeatures(e.point, {
-          layers: layers
-      });
-
-      if (states.length > 0) {
-          document.getElementById('pd').innerHTML = "<h3>" + "Zone " + states[0].properties.zone + "</h3><p><b>" + states[0].properties.ward +  "</b></p><p>" + "<b>Parcel Mun-Bloc-Lot:</b> " + states[0].properties.parcelMun + "-" + states[0].properties.parcelBloc + "-" + states[0].properties.parcelLot +  "</p><p>" + "<b>Name:</b> " + states[0].properties.name +  "</p><p>" + "<b>Modified Date:</b> " + states[0].properties.modified +  "</p><p>" + "<b>Parcel Modified Date:</b> " + states[0].properties.parcelMod  +  "</p><p>" + "<b>Centroid X-Coordinate:</b> " + states[0].properties.centroidX + "</p><p>" + "<b>Centroid Y-Coordinate:</b> " + states[0].properties.centroidY + "</p><p>" + "<b>Credit:</b> © OpenStreetMap contributors" + "</p><p>" + "<b>License:</b> openstreetmap.org/copyright" + "</p><p>" + "<b>Static URL:</b> openstreetmap.org/" + "<br>" + "export#map=13/40.7274/-74.0674";
-      } else {
-          document.getElementById('pd').innerHTML = '<p><i>Hover over a building for zone and parcel information.</i></p>';
-      }
-    });
-});
-
-map.getCanvas().style.cursor = 'default';
-
-</script>
-
-<div class='map-overlay' id='features'><h2>JERSEY CITY <br>BUILDING CENSUS</h2>
-	<div id='pd'><p><i>Hover over a building for zone and parcel information.</i></p></div></div>
-<div class='map-overlay' id='legend'></div>
-
 <style>
-	body { margin:0; padding:0; }
-	h2, h3 {
-	    margin: 10px;
-	    font-size: 1.1em;
-	}
-	h3 {
-	    font-size: .9em;
-	}
-	p {
-	    font-size: 0.81em;
-	    margin: 10px;
-	    text-align: left;
-	}
+    #menu {
+        position: absolute;
+        background: rgba(255, 255, 255, 0.7);
+        padding: 5px;
+        font-family: Arial, sans-serif;        
+        font-size: 75%;
+        border-radius: 3px;
+    }
+    #attribution {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        background: rgba(255, 255, 255, 0.5);
+        padding: 5px;
+        font-family: Arial, sans-serif;        
+        font-size: 75%;
+        border-radius: 3px;
+    }
+    body { margin:0; padding:0; }
+    h2, h3 {
+        margin: 10px;
+        font-size: 1.5em;
+    }
+    h3 {
+        font-size: .9em;
+    }
+    p {
+        font-size: 0.81em;
+        margin: 10px;
+        text-align: left;
+    }
 #map {
     position:absolute;
     top:0;
@@ -176,7 +84,7 @@ map.getCanvas().style.cursor = 'default';
 }
 #features {
     top: 0;
-    height: 320px;
+    height: 325px;
     margin-top: 20px;
     width: 215px;
 }
@@ -201,6 +109,63 @@ map.getCanvas().style.cursor = 'default';
 }
 
 </style>
+
+
+<script>
+mapboxgl.accessToken = 'pk.eyJ1Ijoic2FyYWhtbGV2aW5lIiwiYSI6IlAweXNYVEUifQ._dz0522LtBABUYyfqP503Q';
+var bounds = [
+    [-74.116039, 40.684505], 
+    [-74.019823, 40.760222]  
+];
+var map = new mapboxgl.Map({
+    container: 'map',
+    style: 'mapbox://styles/sarahmlevine/ciprs62gb001hbakwz4xu2dbh',
+    zoom: 14,
+    minZoom: 14,
+    center: [-74.06291,40.714275],
+    pitch: 55, // pitch in degrees
+    bearing: -35, // bearing in degrees
+    maxBounds: bounds
+});
+var layerList = document.getElementById('menu');
+var inputs = layerList.getElementsByTagName('input');
+function switchLayer(layer) {
+    var layerId = layer.target.id;
+    map.setStyle('mapbox://styles/sarahmlevine/' + layerId );
+}
+for (var i = 0; i < inputs.length; i++) {
+    inputs[i].onclick = switchLayer;
+}
+
+map.on('load', function() {
+  var layers = ['Residential', 'Commercial', 'Industrial', 'Government', 'Medical', 'Special', 'Historic', 'Open Space', 'University'];
+    layers.forEach(function(layer) {;
+      var color = map.getPaintProperty(layer, 'fill-color');
+      var item = document.createElement('div');
+      var key = document.createElement('span');
+      key.className = 'legend-key';
+      key.style.backgroundColor = color;
+      var value = document.createElement('span');
+      value.innerHTML = layer;
+      item.appendChild(key);
+      item.appendChild(value);
+      legend.appendChild(item);
+    });
+    map.on('mousemove', function (e) {
+      var states = map.queryRenderedFeatures(e.point, {
+          layers: layers
+      });
+      if (states.length > 0) {
+          document.getElementById('pd').innerHTML = "<h3>" + "Zone " + states[0].properties.zone + "</h3><p><b>" + states[0].properties.ward +  "</b></p><p>" + "<b>Parcel Mun-Bloc-Lot:</b> " + states[0].properties.parcelMun + "-" + states[0].properties.parcelBloc + "-" + states[0].properties.parcelLot +  "</p><p>" + "<b>Name:</b> " + states[0].properties.name +  "</p><p>" + "<b>Modified Date:</b> " + states[0].properties.modified +  "</p><p>" + "<b>Parcel Modified Date:</b> " + states[0].properties.parcelMod  +  "</p><p>" + "<b>Centroid X-Coordinate:</b> " + states[0].properties.centroidX + "</p><p>" + "<b>Centroid Y-Coordinate:</b> " + states[0].properties.centroidY + "</p><p>" + "<b>Credit:</b> © OpenStreetMap contributors" + "</p><p>" + "<b>License:</b> openstreetmap.org/copyright" + "</p><p>" + "<b>Static URL:</b> openstreetmap.org/" + "<br>" + "export#map=13/40.7274/-74.0674";
+      } else {
+          document.getElementById('pd').innerHTML = '<p><i>A sort of love letter by Sarah Michael Levine.</i></p><p>Hover over a building for zone and parcel information.</p>';
+      }
+    });
+});
+map.getCanvas().style.cursor = 'default';
+
+
+</script>
 
 </body>
 </html>
