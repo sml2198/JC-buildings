@@ -1,4 +1,4 @@
-# JC-heights
+# JC-buildings
 
 A project to map every building in Jersey City. Made with JOSM, QGIS, and Mapbox. 
 
