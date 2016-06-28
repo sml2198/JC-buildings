@@ -27,7 +27,7 @@
     <label for='cipvt15bo000rbcnmiw8li64d'>satellite</label>
 </div>
 <div class='map-overlay' id='features'><h2>JERSEY CITY <br>BUILDING CENSUS</h2>
-    <div id='pd'><p><i>A sort of love letter by Sarah Michael Levine.</i></p><p>Hover over a building for zone and parcel information.</p></div></div>
+    <div id='pd'><p><i>A sort of love letter by Sarah Michael Levine.</i></p><p>Click on a building for zone and parcel information.</p></div></div>
 <div class='map-overlay' id='legend'><strong>Zone Types</strong></div>
 <div id='attribution'>
    © <a href= "http://www.sarahmakesmaps.com" target = "_blank">sarahmakesmaps.com</a>
@@ -158,7 +158,7 @@ map.on('load', function() {
       if (states.length > 0) {
           document.getElementById('pd').innerHTML = "<h3>" + "Zone " + states[0].properties.zone + "</h3><p><b>" + states[0].properties.ward +  "</b></p><p>" + "<b>Parcel Mun-Bloc-Lot:</b> " + states[0].properties.parcelMun + "-" + states[0].properties.parcelBloc + "-" + states[0].properties.parcelLot +  "</p><p>" + "<b>Name:</b> " + states[0].properties.name +  "</p><p>" + "<b>Modified Date:</b> " + states[0].properties.modified +  "</p><p>" + "<b>Parcel Modified Date:</b> " + states[0].properties.parcelMod  +  "</p><p>" + "<b>Centroid X-Coordinate:</b> " + states[0].properties.centroidX + "</p><p>" + "<b>Centroid Y-Coordinate:</b> " + states[0].properties.centroidY + "</p><p>" + "<b>Credit:</b> © OpenStreetMap contributors" + "</p><p>" + "<b>License:</b> openstreetmap.org/copyright" + "</p><p>" + "<b>Static URL:</b> openstreetmap.org/" + "<br>" + "export#map=13/40.7274/-74.0674";
       } else {
-          document.getElementById('pd').innerHTML = '<p><i>A sort of love letter by Sarah Michael Levine.</i></p><p>Hover over a building for zone and parcel information.</p>';
+          document.getElementById('pd').innerHTML = '<p><i>A sort of love letter by Sarah Michael Levine.</i></p><p>Click on a building for zone and parcel information.</p>';
       }
     });
 });
