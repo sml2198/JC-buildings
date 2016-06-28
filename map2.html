@@ -151,7 +151,7 @@ map.on('load', function() {
       item.appendChild(value);
       legend.appendChild(item);
     });
-    map.on('mousemove', function (e) {
+    map.on('click', function (e) {
       var states = map.queryRenderedFeatures(e.point, {
           layers: layers
       });
