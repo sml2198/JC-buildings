@@ -143,13 +143,15 @@ for (var i = 0; i < inputs.length; i++) {
 }
 
 map.on('load', function() {
-  var layers = ['Residential', 'Commercial', 'Industrial', 'Government', 'Medical', 'Special', 'Historic', 'Open Space', 'University'];
+  var layers = ['Residential', 'Commercial', 'Historic', 'Industrial', 'Special', 'Open Space', 'Medical', 'Government', 'University'];
     layers.forEach(function(layer) {;
       var color = map.getPaintProperty(layer, 'fill-color');
       var item = document.createElement('div');
       var key = document.createElement('span');
       key.className = 'legend-key';
       key.style.backgroundColor = color;
+      var parts = color.match(/hsla\((\d+?), (\d+?%), (\d+?%), (.*)\)/)
+      key.style.border = '1px solid hsla(' + parts[1] + ', ' + parts[2] + ', ' + parts[3] + ', 1.0)';
       var value = document.createElement('span');
       value.innerHTML = layer;
       item.appendChild(key);
