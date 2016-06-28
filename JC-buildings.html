@@ -27,7 +27,8 @@
         <p>Click on a building for zone and parcel information.</p>
         <p>Use shift + up and down/left and right arrows to tilt map and pan.</p>
         <p>Right click and use mouse to spin.</p>
-        <p>Hold shift key, click and drag to draw a bounding box to zoom to an area.</p></div></div>
+        <p>Hold shift key, click and drag to draw a bounding box to zoom to an area.</p>
+        <p>Mobile browsing discouraged.</p></div></div>
 <div class='map-overlay' id='legend'>
     <strong><a href="http://www.cityofjerseycity.com/uploadedFiles/Data/Zoning%20Map%2020150527.pdf" target = "_blank">ZONE TYPES</a></strong>
 </div>
@@ -161,7 +162,7 @@ map.on('load', function() {
       if (states.length > 0) {
           document.getElementById('pd').innerHTML = "<h3>" + "Zone: " + states[0].properties.zone + "</h3><p>" + states[0].properties.ward +  "</p><p>" + "Parcel Mun-Bloc-Lot: " + states[0].properties.parcelMun + "-" + states[0].properties.parcelBloc + "-" + states[0].properties.parcelLot +  "</p><p>" + "Name: " + states[0].properties.name +  "</p><p>" + "Modified Date: " + states[0].properties.modified +  "</p><p>" + "Parcel Modified Date: " + states[0].properties.parcelMod  +  "</p><p>" + "Centroid X-Coordinate: " + states[0].properties.centroidX + "</p><p>" + "Centroid Y-Coordinate: " + states[0].properties.centroidY + "</p><p>" + "Credit: © OpenStreetMap contributors" + "</p><p>" + "License: openstreetmap.org/copyright" + "</p><p>" + "Static URL: openstreetmap.org/" + "<br>" + "export#map=19/" + states[0].properties.centroidY + "/" + states[0].properties.centroidX;
       } else {
-          document.getElementById('pd').innerHTML = '<p><i>A sort of love letter by Sarah Michael Levine. <a href="http://www.sarahmakesmaps.com/blog/2016/3/mapping-jersey-city" target = "_blank">Read more</a> about how this data was created and why it exists.</i></p><br><p><strong>CONTROLS</strong></p><p>Click on a building for zone and parcel information.</p><p>Use shift + up and down/left and right arrows to tilt map and pan.</p><p>Right click and use mouse to spin.</p><p>Hold shift key, click and drag to draw a bounding box to zoom to an area.</p>';
+          document.getElementById('pd').innerHTML = '<p><i>A sort of love letter by Sarah Michael Levine. <a href="http://www.sarahmakesmaps.com/blog/2016/3/mapping-jersey-city" target = "_blank">Read more</a> about how this data was created and why it exists.</i></p><br><p><strong>CONTROLS</strong></p><p>Click on a building for zone and parcel information.</p><p>Use shift + up and down/left and right arrows to tilt map and pan.</p><p>Right click and use mouse to spin.</p><p>Hold shift key, click and drag to draw a bounding box to zoom to an area.</p><p>Mobile browsing discouraged.</p>';
       }
     });
 });
