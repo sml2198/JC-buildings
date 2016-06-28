@@ -6,6 +6,7 @@
     <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
     <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v0.20.1/mapbox-gl.js'></script>
     <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v0.20.1/mapbox-gl.css' rel='stylesheet' />
+    <link href='https://fonts.googleapis.com/css?family=Montserrat|Open+Sans' rel='stylesheet' type='text/css'>
         <style>
         body { margin:0; padding:0; }
         #map { position:absolute; top:0; bottom:0; width:100%; }
@@ -29,35 +30,18 @@
         <p>Right click and use mouse to spin.</p>
         <p>Hold shift key, click and drag to draw a bounding box to zoom to an area.</p></div></div>
 <div class='map-overlay' id='legend'>
-    <strong><a href="http://www.cityofjerseycity.com/uploadedFiles/Data/Zoning%20Map%2020150527.pdf" target = "_blank">Zone Types</a></strong>
+    <strong><a href="http://www.cityofjerseycity.com/uploadedFiles/Data/Zoning%20Map%2020150527.pdf" target = "_blank">ZONE TYPES</a></strong>
 </div>
 <div id='attribution'>
    © <a href= "http://www.sarahmakesmaps.com" target = "_blank">sarahmakesmaps.com</a>
 </div>
 
 <style>
-    #menu {
-        position: absolute;
-        background: rgba(255, 255, 255, 0.7);
-        padding: 5px;
-        font-family: Arial, sans-serif;        
-        font-size: 75%;
-        border-radius: 3px;
-    }
-    #attribution {
-        position: absolute;
-        bottom: 0;
-        left: 0;
-        background: rgba(255, 255, 255, 0.5);
-        padding: 5px;
-        font-family: Arial, sans-serif;        
-        font-size: 75%;
-        border-radius: 3px;
-    }
     body { margin:0; padding:0; }
     h2, h3 {
         margin: 10px;
         font-size: 1.5em;
+        font-family: 'Montserrat', sans-serif;
     }
     h3 {
         font-size: .9em;
@@ -79,16 +63,16 @@
     right: 0;
     background: rgba(255, 255, 255, 0.7);
     margin-right: 20px;
-    font-family: Arial, sans-serif;
-    font-size: small;
+    font-family: 'Open Sans', sans-serif;
     overflow: auto;
     border-radius: 3px;
+    font-size: 90%;
 }
 #features {
     top: 0;
-    height: 325px;
+    height: 370px;
     margin-top: 20px;
-    width: 215px;
+    width: 260px;
 }
 #legend {
     padding: 10px;
@@ -96,9 +80,9 @@
     line-height: 18px;
     height: 160px;
     margin-bottom: 40px;
-    width: 100px;
-    font-family: Arial, sans-serif;
-    font-size: 65%;
+    width: 110px;
+    font-family: 'Open Sans', sans-serif;
+    font-size: 75%;
 }
 .legend-key {
     display:inline-block;
@@ -106,12 +90,28 @@
     width: 10px;
     height: 10px;
     margin-right: 5px;
-    font-family: Arial, sans-serif;
-    font-size: 70%;
+    font-family: 'Open Sans', sans-serif;
+    font-size: 80%;
 }
-
+#menu {   
+    position: absolute;
+    background: rgba(255, 255, 255, 0.7);
+    padding: 5px;
+    font-family: 'Open Sans', sans-serif;    
+    font-size: 75%;
+    border-radius: 3px;
+}
+#attribution {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    background: rgba(255, 255, 255, 0.5);
+    padding: 5px;
+    font-family: 'Open Sans', sans-serif;      
+    font-size: 75%;
+    border-radius: 3px;
+}
 </style>
-
 
 <script>
 mapboxgl.accessToken = 'pk.eyJ1Ijoic2FyYWhtbGV2aW5lIiwiYSI6IlAweXNYVEUifQ._dz0522LtBABUYyfqP503Q';
