@@ -8,3 +8,5 @@ Merged datasets courtesy of <a href= "http://data.jerseycitynj.gov./" target = "
 Read about <a href ="http://www.sarahmakesmaps.com/blog/2016/3/mapping-jersey-city" target= "_blank"> why and how</a>. <a href = "http://sml2198.github.io/JC-buildings/JC-buildings.html" target = "_blank">See it</a> live.
 
 ![screen-shot-final](https://cloud.githubusercontent.com/assets/6125152/16428566/53c35a56-3d27-11e6-9742-f375cb680077.png)
+
+Coming soon: data with merged parcel info!
