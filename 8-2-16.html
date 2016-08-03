@@ -161,12 +161,6 @@ for (var i = 0; i < inputs.length; i++) {
     inputs[i].onclick = switchLayer;
 }
 
-$(function() {
-    while( $('#.map-overlay div').height() > $('#fitin').height() ) {
-        $('#fitin div').css('font-size', (parseInt($('#fitin div').css('font-size')) - 1) + "px" );
-    }
-});
-
 map.on('load', function() {
   var layers = ['Residential', 'Commercial', 'Historic', 'Industrial', 'Special', 'Open Space', 'Medical', 'Government', 'University'];
     layers.forEach(function(layer) {;
