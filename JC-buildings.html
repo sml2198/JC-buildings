@@ -22,7 +22,7 @@
     <label for='cipvt15bo000rbcnmiw8li64d'>satellite</label>
 </div>
 <div class='map-overlay' id='features'><h2>JERSEY CITY <br>BUILDING CENSUS</h2>
-    <div id='pd'><p><i>A sort of love letter by Sarah Michael Levine. <a href="http://www.sarahmakesmaps.com/blog/2016/6/mapping-jersey-city-ii-every-building" target = "_blank">Read more</a> about how this data was created and why it exists.</i></p><br>
+    <div id='pd'><p><i>A sort of love letter by Sarah Michael Levine. <a href="http://www.sarahmakesmaps.com/blog/2016/6/mapping-jersey-city-ii-every-building" target = "_blank">Read more</a> about how this data was created and why it exists.</i><br>
         <p><strong>CONTROLS</strong></p>
         <p>Click on a building for zone and parcel information.</p>
         <p>Use shift + up and down/left and right arrows to tilt map and pan.</p>
@@ -41,15 +41,30 @@
     h2, h3 {
         margin: 10px;
         font-size: 1.6em;
+        color: #FFFFFF;
         font-family: 'Montserrat', sans-serif;
     }
     h3 {
         font-size: .9em;
+        color: #FFFFFF;
     }
     p {
         font-size: 0.91em;
         margin: 10px;
         text-align: left;
+        color: #FFFFFF;
+    }
+    br {
+        line-height: 180%;
+     }
+    a:link {
+    color: #666666;
+    }
+    a:visited {
+    color: #FF1493;        
+    }
+    a:hover {
+    color: #FF1493;                
     }
 #map {
     position:absolute;
@@ -66,11 +81,14 @@
     font-family: 'Roboto', sans-serif;
     overflow: auto;
     border-radius: 3px;
-    font-size: 85%;
+    font-size: 75%;
+    color: #FFFFFF;
+    background-color: #000000;
+    opacity: 0.7;
 }
 #features {
     top: 0;
-    height: 33%;
+    height: 42%;
     margin-top: 20px;
     width: 255px;
 }
@@ -78,11 +96,14 @@
     padding: 10px;
     box-shadow: 0 1px 2px rgba(0,0,0,0.10);
     line-height: 18px;
-    height: 15%;
+    height: 17%;
     margin-bottom: 40px;
     width: 110px;
     font-family: 'Roboto', sans-serif;
     font-size: 70%;
+    background-color: #000000;
+    opacity: 0.7;
+    color: #FFFFFF;
 }
 .legend-key {
     display:inline-block;
@@ -92,6 +113,7 @@
     margin-right: 5px;
     font-family: 'Roboto', sans-serif;
     font-size: 70%;
+    color: #FFFFFF;
 }
 #menu {   
     position: absolute;
@@ -121,7 +143,7 @@ var bounds = [
 ];
 var map = new mapboxgl.Map({
     container: 'map',
-    style: 'mapbox://styles/sarahmlevine/ciprs62gb001hbakwz4xu2dbh',
+    style: 'mapbox://styles/sarahmlevine/circt7cm20004g7m34vkbgtc0',
     zoom: 14,
     minZoom: 14,
     center: [-74.06291,40.714275],
@@ -160,9 +182,23 @@ map.on('load', function() {
           layers: layers
       });
       if (states.length > 0) {
-          document.getElementById('pd').innerHTML = "<h3>" + "Zone: " + states[0].properties.zone + "</h3><p>" + states[0].properties.ward +  "</p><p>" + "Parcel Mun-Bloc-Lot: " + states[0].properties.parcelMun + "-" + states[0].properties.parcelBloc + "-" + states[0].properties.parcelLot +  "</p><p>" + "Name: " + states[0].properties.name +  "</p><p>" + "Modified Date: " + states[0].properties.modified +  "</p><p>" + "Parcel Modified Date: " + states[0].properties.parcelMod  +  "</p><p>" + "Centroid X-Coordinate: " + states[0].properties.centroidX + "</p><p>" + "Centroid Y-Coordinate: " + states[0].properties.centroidY + "</p><p>" + "Credit: © OpenStreetMap contributors" + "</p><p>" + "License: openstreetmap.org/copyright" + "</p><p>" + "Static URL: openstreetmap.org/" + "<br>" + "export#map=19/" + states[0].properties.centroidY + "/" + states[0].properties.centroidX;
+          document.getElementById('pd').innerHTML = "<h3>" 
+            + "Zone: " + '<a href ="' + states[0].properties.zoningURL + '">' + states[0].properties.zone + '</a>' + "</h3><p>" 
+            + "Ward: " + states[0].properties.ward +  "<br>" 
+            + "Neighborhood: " + states[0].properties.neighborho +  "<br>" 
+            + "Police District: " + states[0].properties.policeDist +  "<br>" 
+            + "Parcel Mun-Bloc-Lot: " + states[0].properties.parcelMun + "-" + states[0].properties.parcelBloc + "-" + states[0].properties.parcelLot +  "<br>"  
+            + "Name: " + states[0].properties.name +  "<br>"  
+            + "Address: " + states[0].properties.propLoc +  "<br>" 
+            + "Year Built: " + states[0].properties.yearBuilt +  "<br>" 
+            + "Sale Price: " + states[0].properties.salePrice +  "<br>" 
+            + "Sale Date: " + states[0].properties.saleDate +  "<br>"  
+            + "Total Assessment: " + states[0].properties.totAssess +  "<br>"  
+            + "Owner: " + states[0].properties.ownerName +  "<br>" 
+            + "Static URL: " + '<a href ="http://www.' + states[0].properties.bldgURL + '" target="_blank">' + states[0].properties.bldgURL + '</a>' + "<br>" 
+            + "Credit: © OpenStreetMap contributors";
       } else {
-          document.getElementById('pd').innerHTML = '<p><i>A sort of love letter by Sarah Michael Levine. <a href="http://www.sarahmakesmaps.com/blog/2016/6/mapping-jersey-city-ii-every-building" target = "_blank">Read more</a> about how this data was created and why it exists.</i></p><br><p><strong>CONTROLS</strong></p><p>Click on a building for zone and parcel information.</p><p>Use shift + up and down/left and right arrows to tilt map and pan.</p><p>Right click and use mouse to spin.</p><p>Hold shift key, click and drag to draw a bounding box to zoom to an area.</p><p>Mobile browsing discouraged.</p>';
+          document.getElementById('pd').innerHTML = '<p><i>A sort of love letter by Sarah Michael Levine. <a href="http://www.sarahmakesmaps.com/blog/2016/6/mapping-jersey-city-ii-every-building" target = "_blank">Read more</a> about how this data was created and why it exists.</i><br><strong>CONTROLS</strong></p><p>Click on a building for zone and parcel information.</p><p>Use shift + up and down/left and right arrows to tilt map and pan.</p><p>Right click and use mouse to spin.</p><p>Hold shift key, click and drag to draw a bounding box to zoom to an area.</p><p>Mobile browsing discouraged.</p>';
       }
     });
 });
