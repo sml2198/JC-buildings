@@ -119,6 +119,8 @@
 
 
 map.on('load', function() {
+  var layers = ['Residential', 'Commercial', 'Historic', 'Industrial', 'Special', 'Open Space', 'Medical', 'Government', 'University'];
+
     map.on('click', function (e) {
       var states = map.queryRenderedFeatures(e.point, {
           layers: layers
