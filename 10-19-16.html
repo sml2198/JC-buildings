@@ -61,16 +61,16 @@
         line-height: 190%;
      }
     strong {
-        color: #ADFF2F;
+        color: #a6a6a6;
     }
     a:link {
-    color: #ADFF2F;
+    color: #a6a6a6;
     }
     a:visited {
-    color: #ADFF2F;        
+    color: #a6a6a6;        
     }
     a:hover {
-    color: #ADFF2F;                
+    color: #a6a6a6;                
     }
 #map {
     position:absolute;
@@ -81,19 +81,20 @@
 .map-overlay {
     position: absolute;
     bottom: 0;
-    right: 0;
-    margin-right: 20px;
+    left: 0;
+    margin-left: 15px;
     font-family: 'Roboto', sans-serif;
     overflow: auto;
-    border-radius: 2px;
+    border-radius: 3px;
     font-size: 85%;
     color: #FFFFFF;
     background-color: #000000;
-    opacity: 0.80;
+    opacity: 0.85;
 }
 #menu {   
     position: absolute;
     color: #FFFFFF;
+    right: 0;
     background-color: #000000;
     opacity: 0.7;
     padding: 5px;
@@ -103,9 +104,9 @@
 }
 #features {
     top: 0;
-    height: 90%;
+    height: 92%;
     margin-top: 20px;
-    width: 20%;
+    width: 23%;
 }
 #attribution {
     position: absolute;
@@ -122,22 +123,23 @@
 }
 </style>
 
-
 <script>
     mapboxgl.accessToken = 'pk.eyJ1Ijoic2FyYWhtbGV2aW5lIiwiYSI6IlAweXNYVEUifQ._dz0522LtBABUYyfqP503Q';
-    var bounds = [
-        [-74.019871, 40.699182], 
-        [-74.019823, 40.760222] 
-    ];
-    var map = new mapboxgl.Map({
-        container: 'map',
-        zoom: 14.0,
-        center: [-74.050694, 40.723646],
-        pitch: 48.53,
-        bearing: -24.50,
-        hash: true,
-        style: 'mapbox://styles/sarahmlevine/ciprs62gb001hbakwz4xu2dbh',
-    });
+var bounds = [
+    [-74.019871, 40.699182], 
+    [-74.019823, 40.760222] 
+];
+var map = new mapboxgl.Map({
+    container: 'map',
+    zoom: 14.0,
+    center: [-74.050694, 40.723646],
+    pitch: 48.53,
+    bearing: -24.50,
+    hash: true,
+    style: 'mapbox://styles/sarahmlevine/ciprs62gb001hbakwz4xu2dbh',
+});
+
+map.getCanvas().style.cursor = 'default';
 
 map.on('load', function() {
 
@@ -149,6 +151,7 @@ map.on('load', function() {
     function switchLayer(layer) {
         var layerId = layer.target.id;
         map.setStyle('mapbox://styles/sarahmlevine/' + layerId );
+        loadbuildings()
     }
 
     for (var i = 0; i < inputs.length; i++) {
@@ -186,12 +189,12 @@ map.on('load', function() {
           document.getElementById('pd').innerHTML = '<p><i>A sort of love letter by Sarah Michael Levine. <a href="http://www.sarahmakesmaps.com/blog/2016/6/mapping-jersey-city-ii-every-building" target = "_blank">Read more</a> about how this data was created and why it exists.</i><br><strong>CONTROLS</strong></p><p>Click on a building footprint for zone and parcel information.</p><p>Use shift + up and down/left and right arrows to tilt map and pan.</p><p>Right click and use mouse to spin.</p><p>Hold shift key, click and drag to draw a bounding box to zoom to an area.</p><p>Mobile browsing discouraged.</p>';
       }
     });
+loadbuildings()
 });
-map.getCanvas().style.cursor = 'default';
 
 // the 'building' layer in the mapbox-streets vector source contains building-height
 // data from OpenStreetMap.
-map.on('load', function() {
+function loadbuildings() {
     map.addSource('Special', {
         type: 'vector',
         url: 'mapbox://sarahmlevine.sarahmlevine.906mu5of'
@@ -204,7 +207,7 @@ map.on('load', function() {
         'type': 'fill',
         'minzoom': 14,
         'paint': {
-            'fill-color': '#ADFF2F ',
+            'fill-color': '#42e5f4',
             'fill-extrude-height': {
                 'type': 'identity',
                 'property': 'bldgHeight'
@@ -220,7 +223,7 @@ map.on('load', function() {
         'type': 'fill',
         'minzoom': 14,
         'paint': {
-            'fill-color': '#ADFF2F ',
+            'fill-color': '#A3BCF9',
             'fill-extrude-height': {
                 'type': 'identity',
                 'property': 'bldgHeight'
@@ -236,7 +239,7 @@ map.on('load', function() {
         'type': 'fill',
         'minzoom': 14,
         'paint': {
-            'fill-color': '#ADFF2F ',
+            'fill-color': '#847996',
             'fill-extrude-height': {
                 'type': 'identity',
                 'property': 'bldgHeight'
@@ -252,7 +255,7 @@ map.on('load', function() {
         'type': 'fill',
         'minzoom': 14,
         'paint': {
-            'fill-color': '#ADFF2F ',
+            'fill-color': '#310A31',
             'fill-extrude-height': {
                 'type': 'identity',
                 'property': 'bldgHeight'
@@ -268,10 +271,10 @@ map.on('load', function() {
         'type': 'fill',
         'minzoom': 14,
         'paint': {
-            'fill-color': '#ADFF2F ',
+            'fill-color': '#6666ff',
             'fill-extrude-height': {
                 'type': 'identity',
-                'property': '1985A1'
+                'property': 'bldgHeight'
             },
             'fill-opacity': .5
         }
@@ -284,10 +287,10 @@ map.on('load', function() {
         'type': 'fill',
         'minzoom': 14,
         'paint': {
-            'fill-color': '#ADFF2F ',
+            'fill-color': '#ff80ff',
             'fill-extrude-height': {
                 'type': 'identity',
-                'property': '9AE076'
+                'property': 'bldgHeight'
             },
             'fill-opacity': .5
         }
@@ -300,7 +303,7 @@ map.on('load', function() {
         'type': 'fill',
         'minzoom': 14,
         'paint': {
-            'fill-color': '#ADFF2F ',
+            'fill-color': '#660066',
             'fill-extrude-height': {
                 'type': 'identity',
                 'property': 'bldgHeight'
@@ -316,7 +319,7 @@ map.on('load', function() {
         'type': 'fill',
         'minzoom': 14,
         'paint': {
-            'fill-color': '#ADFF2F ',
+            'fill-color': '#F7F3E3',
             'fill-extrude-height': {
                 'type': 'identity',
                 'property': 'bldgHeight'
@@ -332,7 +335,7 @@ map.on('load', function() {
         'type': 'fill',
         'minzoom': 14,
         'paint': {
-            'fill-color': '#ADFF2F ',
+            'fill-color': '#ADFF2F',
             'fill-extrude-height': {
                 'type': 'identity',
                 'property': 'bldgHeight'
@@ -340,8 +343,8 @@ map.on('load', function() {
             'fill-opacity': .5
         }
     });
+};
 
-});
 </script>
 
 </body>
