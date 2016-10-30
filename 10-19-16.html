@@ -16,10 +16,10 @@
 
 <div id='map'></div>
 <div id='menu'>
-    <input id='ciprs62gb001hbakwz4xu2dbh' type='radio' name='rtoggle' value='ciprs62gb001hbakwz4xu2dbh' checked='checked'>
-    <label for='ciprs62gb001hbakwz4xu2dbh'>dark</label>
-    <input id='cipvt15bo000rbcnmiw8li64d' type='radio' name='rtoggle' value='cipvt15bo000rbcnmiw8li64d'>
-    <label for='cipvt15bo000rbcnmiw8li64d'>satellite</label>
+    <input id='ciux9lxwv00iy2jqneit1egms' type='radio' name='rtoggle' value='ciux9lxwv00iy2jqneit1egms' checked='checked'>
+    <label for='ciux9lxwv00iy2jqneit1egms'>dark</label>
+    <input id='ciux9qkuh00902ipheuxc1zw0' type='radio' name='rtoggle' value='ciux9qkuh00902ipheuxc1zw0'>
+    <label for='ciux9qkuh00902ipheuxc1zw0'>satellite</label>
     <input id='ciukc013g004w2irrdrtpui3v' type='radio' name='rtoggle' value='ciukc013g004w2irrdrtpui3v'>
     <label for='ciukc013g004w2irrdrtpui3v'>streets</label>
 </div>
@@ -36,7 +36,7 @@
         <p>Not all information exists for all buildings. Many fields are "undefined".</p>
     </div></div>
 <div id='attribution'>
-   © <a href= "http://www.sarahmakesmaps.com" target = "_blank">sarahmakesmaps.com</a>
+   © <a href= "http://www.sarahmakesmaps.com" target = "_blank">sarahmakesmaps.com</a> © <a href= "https://www.mapbox.com/about/maps/" target = "_blank">Mapbox</a> © <a href= "http://www.openstreetmap.org/about/" target = "_blank">OpenStreetMap</a> <strong><a href="https://www.mapbox.com/map-feedback/#/-74.07214706629739/40.71655453008873/15" target = "_blank">Improve this map</a></strong>
 </div>
 
 <style>
@@ -95,6 +95,7 @@
     position: absolute;
     color: #FFFFFF;
     right: 0;
+    top: 0;
     background-color: #000000;
     opacity: 0.7;
     padding: 5px;
@@ -111,7 +112,7 @@
 #attribution {
     position: absolute;
     bottom: 0;
-    left: 0;
+    right: 0;
     background: rgba(255, 255, 255, 0.7);
     font-family: 'Roboto', sans-serif; 
     color: #FFFFFF;
@@ -137,7 +138,8 @@ var map = new mapboxgl.Map({
     bearing: -24.50,
     hash: true, 
     maxBounds: bounds,
-    style: 'mapbox://styles/sarahmlevine/ciprs62gb001hbakwz4xu2dbh',
+    attributionControl: false,
+    style: 'mapbox://styles/sarahmlevine/ciux9lxwv00iy2jqneit1egms',
 });
 
 map.getCanvas().style.cursor = 'default';
