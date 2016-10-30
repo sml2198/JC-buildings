@@ -155,11 +155,6 @@ map.on('load', function() {
     function switchLayer(layer) {
         var layerId = layer.target.id;
         map.setStyle('mapbox://styles/sarahmlevine/' + layerId );
-    }
-
-    function switchLayer(layer) {
-        var layerId = layer.target.id;
-        map.setStyle('mapbox://styles/sarahmlevine/' + layerId );
         map.on('style.load', function() {
             loadbuildings();  
         });
