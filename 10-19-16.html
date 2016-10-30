@@ -15,6 +15,14 @@
 <body>
 
 <div id='map'></div>
+<div id='menu'>
+    <input id='ciprs62gb001hbakwz4xu2dbh' type='radio' name='rtoggle' value='ciprs62gb001hbakwz4xu2dbh' checked='checked'>
+    <label for='ciprs62gb001hbakwz4xu2dbh'>dark</label>
+    <input id='cipvt15bo000rbcnmiw8li64d' type='radio' name='rtoggle' value='cipvt15bo000rbcnmiw8li64d'>
+    <label for='cipvt15bo000rbcnmiw8li64d'>satellite</label>
+    <input id='ciukc013g004w2irrdrtpui3v' type='radio' name='rtoggle' value='ciukc013g004w2irrdrtpui3v'>
+    <label for='ciukc013g004w2irrdrtpui3v'>streets</label>
+</div>
 <div class='map-overlay' id='features'><h2>JERSEY CITY BUILDING CENSUS</h2>
     <div id='pd'><p><i>A sort of love letter by Sarah Michael Levine. <a href="http://www.sarahmakesmaps.com/blog/2016/6/mapping-jersey-city-ii-every-building" target = "_blank">Read more</a> about how this data was created and why it exists.</i><br>
     <p><strong>CONTROLS</strong></p>
@@ -83,6 +91,17 @@
     background-color: #000000;
     opacity: 0.9;
 }
+#menu {   
+    position: absolute;
+    color: #FFFFFF;
+    right: 0;
+    background-color: #000000;
+    opacity: 0.7;
+    padding: 5px;
+    font-family: 'Roboto', sans-serif;   
+    font-size: 75%;
+    border-radius: 3px;
+}
 #features {
     top: 0;
     height: 92%;
@@ -113,7 +132,7 @@ var bounds = [
 var map = new mapboxgl.Map({
     container: 'map',
     zoom: 14.0,
-    center: [-74.0488, 40.7183],
+    center: [-74.0495, 40.7204],
     pitch: 48.53,
     bearing: -24.50,
     hash: true, 
@@ -128,6 +147,25 @@ map.on('load', function() {
     map.setLight({color: "#FFFFFF", intensity: 0.45, position: [1.05, 135, 45]});
 
     var layers = ['Residential', 'Commercial', 'Historic', 'Industrial', 'Special', 'Open Space', 'Medical', 'Government', 'University'];
+    var layerList = document.getElementById('menu');
+    var inputs = layerList.getElementsByTagName('input');
+
+    function switchLayer(layer) {
+        var layerId = layer.target.id;
+        map.setStyle('mapbox://styles/sarahmlevine/' + layerId );
+    }
+
+    function switchLayer(layer) {
+        var layerId = layer.target.id;
+        map.setStyle('mapbox://styles/sarahmlevine/' + layerId );
+        map.on('style.load', function() {
+            loadbuildings();  
+        });
+    }
+
+    for (var i = 0; i < inputs.length; i++) {
+        inputs[i].onclick = switchLayer; 
+    }
 
     map.on('click', function (e) {
       var states = map.queryRenderedFeatures(e.point, {
@@ -160,7 +198,7 @@ map.on('load', function() {
           document.getElementById('pd').innerHTML = '<p><i>A sort of love letter by Sarah Michael Levine. <a href="http://www.sarahmakesmaps.com/blog/2016/6/mapping-jersey-city-ii-every-building" target = "_blank">Read more</a> about how this data was created and why it exists.</i><br><strong>CONTROLS</strong></p><p>Click on a building footprint for zone and parcel information.</p><p>Use shift + up and down/left and right arrows to tilt map and pan.</p><p>Right click and use mouse to spin.</p><p>Hold shift key, click and drag to draw a bounding box to zoom to an area.</p><p>Mobile browsing discouraged.</p><p><strong>THINGS TO KNOW</strong></p><p>For building info, click on building footprints (not the 3D shapes).</p><p>Not all information exists for all buildings. Many fields are "undefined".</p>';
       }
     });
-loadbuildings()
+    loadbuildings()
 });
 
 // the 'building' layer in the mapbox-streets vector source contains building-height
