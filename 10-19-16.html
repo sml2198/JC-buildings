@@ -14,6 +14,9 @@
 </head>
 <body>
 
+
+<script src='https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-supported/v1.2.0/mapbox-gl-supported.js'></script>
+
 <div id='map'></div>
 <div id='menu'>
     <input id='ciux9lxwv00iy2jqneit1egms' type='radio' name='rtoggle' value='ciux9lxwv00iy2jqneit1egms' checked='checked'>
@@ -126,230 +129,236 @@
 
 <script>
 mapboxgl.accessToken = 'pk.eyJ1Ijoic2FyYWhtbGV2aW5lIiwiYSI6IlAweXNYVEUifQ._dz0522LtBABUYyfqP503Q';
-var bounds = [
-    [-74.122906, 40.684179], 
-    [-74.012957, 40.772768] 
-];
-var map = new mapboxgl.Map({
-    container: 'map',
-    zoom: 14.0,
-    center: [-74.0495, 40.7204],
-    pitch: 48.53,
-    bearing: -24.50,
-    hash: true, 
-    maxBounds: bounds,
-    attributionControl: false,
-    style: 'mapbox://styles/sarahmlevine/ciux9lxwv00iy2jqneit1egms',
-});
+if (!mapboxgl.supported()) {
+    alert('Your browser does not support Mapbox GL');
+} else {
+    var map = new mapboxgl.Map({
+        container: 'map',
+        zoom: 14.0,
+        center: [-74.0495, 40.7204],
+        pitch: 48.53,
+        bearing: -24.50,
+        hash: true, 
+        maxBounds: bounds,
+        attributionControl: false,
+        style: 'mapbox://styles/sarahmlevine/ciux9lxwv00iy2jqneit1egms',
+    });
 
-map.getCanvas().style.cursor = 'default';
 
-map.on('load', function() {
+    var bounds = [
+        [-74.122906, 40.684179], 
+        [-74.012957, 40.772768] 
+    ];
 
-    map.setLight({color: "#FFFFFF", intensity: 0.45, position: [1.05, 135, 45]});
+    map.getCanvas().style.cursor = 'default';
 
-    var layers = ['Residential', 'Commercial', 'Historic', 'Industrial', 'Special', 'Open Space', 'Medical', 'Government', 'University'];
-    var layerList = document.getElementById('menu');
-    var inputs = layerList.getElementsByTagName('input');
+    map.on('load', function() {
 
-    function switchLayer(layer) {
-        var layerId = layer.target.id;
-        map.setStyle('mapbox://styles/sarahmlevine/' + layerId );
-        map.on('style.load', function() {
-            loadbuildings();  
+        map.setLight({color: "#FFFFFF", intensity: 0.45, position: [1.05, 135, 45]});
+
+        var layers = ['Residential', 'Commercial', 'Historic', 'Industrial', 'Special', 'Open Space', 'Medical', 'Government', 'University'];
+        var layerList = document.getElementById('menu');
+        var inputs = layerList.getElementsByTagName('input');
+
+        function switchLayer(layer) {
+            var layerId = layer.target.id;
+            map.setStyle('mapbox://styles/sarahmlevine/' + layerId );
+            map.on('style.load', function() {
+                loadbuildings();  
+            });
+        }
+
+        for (var i = 0; i < inputs.length; i++) {
+            inputs[i].onclick = switchLayer; 
+        }
+
+        map.on('click', function (e) {
+          var states = map.queryRenderedFeatures(e.point, {
+              layers: layers
         });
-    }
+          if (states.length > 0) {
+              document.getElementById('pd').innerHTML = "<h3>" 
+                + "Zone: " + '<a href ="' + states[0].properties.zoningURL + '">' + states[0].properties.zone + '</a>' + "</h3><p>" 
+                + "Ward: " + states[0].properties.ward +  "<br>" 
+                + "Neighborhood: " + states[0].properties.neighborho +  "<br>" 
+                + "Police District: " + states[0].properties.policeDist +  "<br>" 
+                + "Parcel Mun-Bloc-Lot-Qual: " + states[0].properties.pamsPin +  "<br>"  
+                + "Name: " + states[0].properties.name +  "<br>"  
+                + "Address: " + states[0].properties.propLoc +  "<br>" 
+                + "Year Built: " + states[0].properties.yearBuilt +  "<br>" 
+                        + "Square Feet: " + states[0].properties.squareFeet +  "<br>" 
+                             + "Number of Stories: " + states[0].properties.numFloors +  "<br>" 
+                + "Sale Price: " + states[0].properties.salePrice +  "<br>" 
+                + "Sale Date: " + states[0].properties.saleDate +  "<br>"  
+                + "Building Assessment: " + states[0].properties.bldgAssess +  "<br>" 
+                + "Total Assessment: " + states[0].properties.totAssess +  "<br>"  
+                + "Taxes: " + states[0].properties.taxes +  "<br>"  
+                + "Owner: " + states[0].properties.ownerName +  "<br>" 
+                    + "Owner Address: " + states[0].properties.ownerMail + ', ' + states[0].properties.ownerMail2 + "<br>" 
+                + "Static URL: " + '<a href ="http://www.' + states[0].properties.bldgURL + '" target="_blank">' 
+                    + "www.'" + " " + states[0].properties.bldgURL
+                    + '</a>' + "<br>" 
+                + "Credit: © OpenStreetMap contributors";
+          } else {
+              document.getElementById('pd').innerHTML = '<p><i>A sort of love letter by Sarah Michael Levine. <a href="http://www.sarahmakesmaps.com/blog/2016/6/mapping-jersey-city-ii-every-building" target = "_blank">Read more</a> about how this data was created and why it exists.</i><br><strong>CONTROLS</strong></p><p>Click on a building footprint for zone and parcel information.</p><p>Use shift + up and down/left and right arrows to tilt map and pan.</p><p>Right click and use mouse to spin.</p><p>Hold shift key, click and drag to draw a bounding box to zoom to an area.</p><p>Mobile browsing discouraged.</p><p><strong>THINGS TO KNOW</strong></p><p>For building info, click on building footprints (not the 3D shapes).</p><p>Not all information exists for all buildings. Many fields are "undefined".</p>';
+          }
+        });
+        loadbuildings()
+    });
 
-    for (var i = 0; i < inputs.length; i++) {
-        inputs[i].onclick = switchLayer; 
-    }
-
-    map.on('click', function (e) {
-      var states = map.queryRenderedFeatures(e.point, {
-          layers: layers
-    });
-      if (states.length > 0) {
-          document.getElementById('pd').innerHTML = "<h3>" 
-            + "Zone: " + '<a href ="' + states[0].properties.zoningURL + '">' + states[0].properties.zone + '</a>' + "</h3><p>" 
-            + "Ward: " + states[0].properties.ward +  "<br>" 
-            + "Neighborhood: " + states[0].properties.neighborho +  "<br>" 
-            + "Police District: " + states[0].properties.policeDist +  "<br>" 
-            + "Parcel Mun-Bloc-Lot-Qual: " + states[0].properties.pamsPin +  "<br>"  
-            + "Name: " + states[0].properties.name +  "<br>"  
-            + "Address: " + states[0].properties.propLoc +  "<br>" 
-            + "Year Built: " + states[0].properties.yearBuilt +  "<br>" 
-                    + "Square Feet: " + states[0].properties.squareFeet +  "<br>" 
-                         + "Number of Stories: " + states[0].properties.numFloors +  "<br>" 
-            + "Sale Price: " + states[0].properties.salePrice +  "<br>" 
-            + "Sale Date: " + states[0].properties.saleDate +  "<br>"  
-            + "Building Assessment: " + states[0].properties.bldgAssess +  "<br>" 
-            + "Total Assessment: " + states[0].properties.totAssess +  "<br>"  
-            + "Taxes: " + states[0].properties.taxes +  "<br>"  
-            + "Owner: " + states[0].properties.ownerName +  "<br>" 
-                + "Owner Address: " + states[0].properties.ownerMail + ', ' + states[0].properties.ownerMail2 + "<br>" 
-            + "Static URL: " + '<a href ="http://www.' + states[0].properties.bldgURL + '" target="_blank">' 
-                + "www.'" + " " + states[0].properties.bldgURL
-                + '</a>' + "<br>" 
-            + "Credit: © OpenStreetMap contributors";
-      } else {
-          document.getElementById('pd').innerHTML = '<p><i>A sort of love letter by Sarah Michael Levine. <a href="http://www.sarahmakesmaps.com/blog/2016/6/mapping-jersey-city-ii-every-building" target = "_blank">Read more</a> about how this data was created and why it exists.</i><br><strong>CONTROLS</strong></p><p>Click on a building footprint for zone and parcel information.</p><p>Use shift + up and down/left and right arrows to tilt map and pan.</p><p>Right click and use mouse to spin.</p><p>Hold shift key, click and drag to draw a bounding box to zoom to an area.</p><p>Mobile browsing discouraged.</p><p><strong>THINGS TO KNOW</strong></p><p>For building info, click on building footprints (not the 3D shapes).</p><p>Not all information exists for all buildings. Many fields are "undefined".</p>';
-      }
-    });
-    loadbuildings()
-});
-
-// the 'building' layer in the mapbox-streets vector source contains building-height
-// data from OpenStreetMap.
-function loadbuildings() {
-    map.addSource('Special', {
-        type: 'vector',
-        url: 'mapbox://sarahmlevine.sarahmlevine.906mu5of'
-    });
-    map.addLayer({
-        'id': 'Residential',
-        'source': 'composite',
-        'filter': ['==', 'zone', ('R-1' || 'R-1A' || 'R-1F' || 'R-2' || 'R-3' || 'R-4' || 'OR' || 'Caven Point')],
-        'source-layer': 'buildings_simple-b1a8dl',
-        'type': 'fill',
-        'minzoom': 14,
-        'paint': {
-            'fill-color': '#42e5f4',
-            'fill-extrude-height': {
-                'type': 'identity',
-                'property': 'bldgHeight'
-            },
-            'fill-opacity': .6
-        }
-    });
-    map.addLayer({
-        'id': 'Special',
-        'source': 'composite',
-        'filter': ['!=', 'zone', ('C' || 'CBD' || 'DT' || 'H' || 'G' || 'R-1' || 'R-1A' || 'R-1F' || 'R-2' || 'R-3' || 'R-4' || 'U' || 'OR' || 'Caven Point' || 'C/A' || 'HC' || 'NC' || 'P/O' || 'M' || 'I' || 'Marine Industrial' || 'Greenville Industrial' || 'Chapel Avenue Industrial Park' || 'PI' )],
-        'source-layer': 'buildings_simple-b1a8dl',
-        'type': 'fill',
-        'minzoom': 14,
-        'paint': {
-            'fill-color': '#A3BCF9',
-            'fill-extrude-height': {
-                'type': 'identity',
-                'property': 'bldgHeight'
-            },
-            'fill-opacity': .6
-        }
-    });
-    map.addLayer({
-        'id': 'Commercial',
-        'source': 'composite',
-        'filter': ['==', 'zone', ('C/A' || 'CBD' || 'DT' || 'HC' || 'NC')],
-        'source-layer': 'buildings_simple-b1a8dl',
-        'type': 'fill',
-        'minzoom': 14,
-        'paint': {
-            'fill-color': '#847996',
-            'fill-extrude-height': {
-                'type': 'identity',
-                'property': 'bldgHeight'
-            },
-            'fill-opacity': .6
-        }
-    });
-    map.addLayer({
-        'id': 'Historic',
-        'source': 'composite',
-        'filter': ['==', 'zone', 'H'],
-        'source-layer': 'buildings_simple-b1a8dl',
-        'type': 'fill',
-        'minzoom': 14,
-        'paint': {
-            'fill-color': '#310A31',
-            'fill-extrude-height': {
-                'type': 'identity',
-                'property': 'bldgHeight'
-            },
-            'fill-opacity': .6
-        }
-    });
-    map.addLayer({
-        'id': 'Industrial',
-        'source': 'composite',
-        'filter': ['==', 'zone', ('Chapel Avenue Industrial Park' || 'Claremont Industrial' || 'Greenville Industrial' || 'Marine Industrial' || 'I' || 'PI')],
-        'source-layer': 'buildings_simple-b1a8dl',
-        'type': 'fill',
-        'minzoom': 14,
-        'paint': {
-            'fill-color': '#6666ff',
-            'fill-extrude-height': {
-                'type': 'identity',
-                'property': 'bldgHeight'
-            },
-            'fill-opacity': .6
-        }
-    });
-    map.addLayer({
-        'id': 'University',
-        'source': 'composite',
-        'filter': ['==', 'zone', 'U'],
-        'source-layer': 'buildings_simple-b1a8dl',
-        'type': 'fill',
-        'minzoom': 14,
-        'paint': {
-            'fill-color': '#ff80ff',
-            'fill-extrude-height': {
-                'type': 'identity',
-                'property': 'bldgHeight'
-            },
-            'fill-opacity': .6
-        }
-    });
-    map.addLayer({
-        'id': 'Government',
-        'source': 'composite',
-        'filter': ['==', 'zone', 'G'],
-        'source-layer': 'buildings_simple-b1a8dl',
-        'type': 'fill',
-        'minzoom': 14,
-        'paint': {
-            'fill-color': '#660066',
-            'fill-extrude-height': {
-                'type': 'identity',
-                'property': 'bldgHeight'
-            },
-            'fill-opacity': .6
-        }
-    });
-    map.addLayer({
-        'id': 'Medical',
-        'source': 'composite',
-        'filter': ['==', 'zone', 'M'],
-        'source-layer': 'buildings_simple-b1a8dl',
-        'type': 'fill',
-        'minzoom': 14,
-        'paint': {
-            'fill-color': '#F7F3E3',
-            'fill-extrude-height': {
-                'type': 'identity',
-                'property': 'bldgHeight'
-            },
-            'fill-opacity': .6
-        }
-    });
-    map.addLayer({
-        'id': 'Open Space',
-        'source': 'composite',
-        'filter': ['==', 'zone', ('C' || 'P/O')],
-        'source-layer': 'buildings_simple-b1a8dl',
-        'type': 'fill',
-        'minzoom': 14,
-        'paint': {
-            'fill-color': '#ADFF2F',
-            'fill-extrude-height': {
-                'type': 'identity',
-                'property': 'bldgHeight'
-            },
-            'fill-opacity': .6
-        }
-    });
-};
+    // the 'building' layer in the mapbox-streets vector source contains building-height
+    // data from OpenStreetMap.
+    function loadbuildings() {
+        map.addSource('Special', {
+            type: 'vector',
+            url: 'mapbox://sarahmlevine.sarahmlevine.906mu5of'
+        });
+        map.addLayer({
+            'id': 'Residential',
+            'source': 'composite',
+            'filter': ['==', 'zone', ('R-1' || 'R-1A' || 'R-1F' || 'R-2' || 'R-3' || 'R-4' || 'OR' || 'Caven Point')],
+            'source-layer': 'buildings_simple-b1a8dl',
+            'type': 'fill',
+            'minzoom': 14,
+            'paint': {
+                'fill-color': '#42e5f4',
+                'fill-extrude-height': {
+                    'type': 'identity',
+                    'property': 'bldgHeight'
+                },
+                'fill-opacity': .6
+            }
+        });
+        map.addLayer({
+            'id': 'Special',
+            'source': 'composite',
+            'filter': ['!=', 'zone', ('C' || 'CBD' || 'DT' || 'H' || 'G' || 'R-1' || 'R-1A' || 'R-1F' || 'R-2' || 'R-3' || 'R-4' || 'U' || 'OR' || 'Caven Point' || 'C/A' || 'HC' || 'NC' || 'P/O' || 'M' || 'I' || 'Marine Industrial' || 'Greenville Industrial' || 'Chapel Avenue Industrial Park' || 'PI' )],
+            'source-layer': 'buildings_simple-b1a8dl',
+            'type': 'fill',
+            'minzoom': 14,
+            'paint': {
+                'fill-color': '#A3BCF9',
+                'fill-extrude-height': {
+                    'type': 'identity',
+                    'property': 'bldgHeight'
+                },
+                'fill-opacity': .6
+            }
+        });
+        map.addLayer({
+            'id': 'Commercial',
+            'source': 'composite',
+            'filter': ['==', 'zone', ('C/A' || 'CBD' || 'DT' || 'HC' || 'NC')],
+            'source-layer': 'buildings_simple-b1a8dl',
+            'type': 'fill',
+            'minzoom': 14,
+            'paint': {
+                'fill-color': '#847996',
+                'fill-extrude-height': {
+                    'type': 'identity',
+                    'property': 'bldgHeight'
+                },
+                'fill-opacity': .6
+            }
+        });
+        map.addLayer({
+            'id': 'Historic',
+            'source': 'composite',
+            'filter': ['==', 'zone', 'H'],
+            'source-layer': 'buildings_simple-b1a8dl',
+            'type': 'fill',
+            'minzoom': 14,
+            'paint': {
+                'fill-color': '#310A31',
+                'fill-extrude-height': {
+                    'type': 'identity',
+                    'property': 'bldgHeight'
+                },
+                'fill-opacity': .6
+            }
+        });
+        map.addLayer({
+            'id': 'Industrial',
+            'source': 'composite',
+            'filter': ['==', 'zone', ('Chapel Avenue Industrial Park' || 'Claremont Industrial' || 'Greenville Industrial' || 'Marine Industrial' || 'I' || 'PI')],
+            'source-layer': 'buildings_simple-b1a8dl',
+            'type': 'fill',
+            'minzoom': 14,
+            'paint': {
+                'fill-color': '#6666ff',
+                'fill-extrude-height': {
+                    'type': 'identity',
+                    'property': 'bldgHeight'
+                },
+                'fill-opacity': .6
+            }
+        });
+        map.addLayer({
+            'id': 'University',
+            'source': 'composite',
+            'filter': ['==', 'zone', 'U'],
+            'source-layer': 'buildings_simple-b1a8dl',
+            'type': 'fill',
+            'minzoom': 14,
+            'paint': {
+                'fill-color': '#ff80ff',
+                'fill-extrude-height': {
+                    'type': 'identity',
+                    'property': 'bldgHeight'
+                },
+                'fill-opacity': .6
+            }
+        });
+        map.addLayer({
+            'id': 'Government',
+            'source': 'composite',
+            'filter': ['==', 'zone', 'G'],
+            'source-layer': 'buildings_simple-b1a8dl',
+            'type': 'fill',
+            'minzoom': 14,
+            'paint': {
+                'fill-color': '#660066',
+                'fill-extrude-height': {
+                    'type': 'identity',
+                    'property': 'bldgHeight'
+                },
+                'fill-opacity': .6
+            }
+        });
+        map.addLayer({
+            'id': 'Medical',
+            'source': 'composite',
+            'filter': ['==', 'zone', 'M'],
+            'source-layer': 'buildings_simple-b1a8dl',
+            'type': 'fill',
+            'minzoom': 14,
+            'paint': {
+                'fill-color': '#F7F3E3',
+                'fill-extrude-height': {
+                    'type': 'identity',
+                    'property': 'bldgHeight'
+                },
+                'fill-opacity': .6
+            }
+        });
+        map.addLayer({
+            'id': 'Open Space',
+            'source': 'composite',
+            'filter': ['==', 'zone', ('C' || 'P/O')],
+            'source-layer': 'buildings_simple-b1a8dl',
+            'type': 'fill',
+            'minzoom': 14,
+            'paint': {
+                'fill-color': '#ADFF2F',
+                'fill-extrude-height': {
+                    'type': 'identity',
+                    'property': 'bldgHeight'
+                },
+                'fill-opacity': .6
+            }
+        });
+    };
+}
 </script>
 
 </body>
