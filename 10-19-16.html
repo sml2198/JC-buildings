@@ -82,14 +82,14 @@
     position: absolute;
     bottom: 0;
     left: 0;
-    margin-left: 15px;
+    margin-left: 7px;
     font-family: 'Roboto', sans-serif;
     overflow: auto;
     border-radius: 3px;
     font-size: 85%;
     color: #FFFFFF;
     background-color: #000000;
-    opacity: 0.85;
+    opacity: 0.9;
 }
 #menu {   
     position: absolute;
@@ -124,18 +124,19 @@
 </style>
 
 <script>
-    mapboxgl.accessToken = 'pk.eyJ1Ijoic2FyYWhtbGV2aW5lIiwiYSI6IlAweXNYVEUifQ._dz0522LtBABUYyfqP503Q';
+mapboxgl.accessToken = 'pk.eyJ1Ijoic2FyYWhtbGV2aW5lIiwiYSI6IlAweXNYVEUifQ._dz0522LtBABUYyfqP503Q';
 var bounds = [
-    [-74.019871, 40.699182], 
-    [-74.019823, 40.760222] 
+    [-74.122906, 40.684179], 
+    [-74.012957, 40.772768] 
 ];
 var map = new mapboxgl.Map({
     container: 'map',
     zoom: 14.0,
-    center: [-74.050694, 40.723646],
+    center: [-74.0495, 40.7204],
     pitch: 48.53,
     bearing: -24.50,
-    hash: true,
+    hash: true, 
+    maxBounds: bounds,
     style: 'mapbox://styles/sarahmlevine/ciprs62gb001hbakwz4xu2dbh',
 });
 
@@ -186,7 +187,7 @@ map.on('load', function() {
                 + '</a>' + "<br>" 
             + "Credit: © OpenStreetMap contributors";
       } else {
-          document.getElementById('pd').innerHTML = '<p><i>A sort of love letter by Sarah Michael Levine. <a href="http://www.sarahmakesmaps.com/blog/2016/6/mapping-jersey-city-ii-every-building" target = "_blank">Read more</a> about how this data was created and why it exists.</i><br><strong>CONTROLS</strong></p><p>Click on a building footprint for zone and parcel information.</p><p>Use shift + up and down/left and right arrows to tilt map and pan.</p><p>Right click and use mouse to spin.</p><p>Hold shift key, click and drag to draw a bounding box to zoom to an area.</p><p>Mobile browsing discouraged.</p>';
+          document.getElementById('pd').innerHTML = '<p><i>A sort of love letter by Sarah Michael Levine. <a href="http://www.sarahmakesmaps.com/blog/2016/6/mapping-jersey-city-ii-every-building" target = "_blank">Read more</a> about how this data was created and why it exists.</i><br><strong>CONTROLS</strong></p><p>Click on a building footprint for zone and parcel information.</p><p>Use shift + up and down/left and right arrows to tilt map and pan.</p><p>Right click and use mouse to spin.</p><p>Hold shift key, click and drag to draw a bounding box to zoom to an area.</p><p>Mobile browsing discouraged.</p><p><strong>THINGS TO KNOW</strong></p><p>For building info, click on building footprints (not the 3D shapes).</p><p>Not all information exists for all buildings. Many fields are "undefined".</p>';
       }
     });
 loadbuildings()
@@ -212,7 +213,7 @@ function loadbuildings() {
                 'type': 'identity',
                 'property': 'bldgHeight'
             },
-            'fill-opacity': .9
+            'fill-opacity': .6
         }
     });
     map.addLayer({
@@ -228,7 +229,7 @@ function loadbuildings() {
                 'type': 'identity',
                 'property': 'bldgHeight'
             },
-            'fill-opacity': .5
+            'fill-opacity': .6
         }
     });
     map.addLayer({
@@ -244,7 +245,7 @@ function loadbuildings() {
                 'type': 'identity',
                 'property': 'bldgHeight'
             },
-            'fill-opacity': .5
+            'fill-opacity': .6
         }
     });
     map.addLayer({
@@ -260,7 +261,7 @@ function loadbuildings() {
                 'type': 'identity',
                 'property': 'bldgHeight'
             },
-            'fill-opacity': .5
+            'fill-opacity': .6
         }
     });
     map.addLayer({
@@ -276,7 +277,7 @@ function loadbuildings() {
                 'type': 'identity',
                 'property': 'bldgHeight'
             },
-            'fill-opacity': .5
+            'fill-opacity': .6
         }
     });
     map.addLayer({
@@ -292,7 +293,7 @@ function loadbuildings() {
                 'type': 'identity',
                 'property': 'bldgHeight'
             },
-            'fill-opacity': .5
+            'fill-opacity': .6
         }
     });
     map.addLayer({
@@ -308,7 +309,7 @@ function loadbuildings() {
                 'type': 'identity',
                 'property': 'bldgHeight'
             },
-            'fill-opacity': .5
+            'fill-opacity': .6
         }
     });
     map.addLayer({
@@ -324,7 +325,7 @@ function loadbuildings() {
                 'type': 'identity',
                 'property': 'bldgHeight'
             },
-            'fill-opacity': .5
+            'fill-opacity': .6
         }
     });
     map.addLayer({
@@ -340,11 +341,10 @@ function loadbuildings() {
                 'type': 'identity',
                 'property': 'bldgHeight'
             },
-            'fill-opacity': .5
+            'fill-opacity': .6
         }
     });
 };
-
 </script>
 
 </body>
