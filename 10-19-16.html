@@ -42,6 +42,20 @@
    © <a href= "http://www.sarahmakesmaps.com" target = "_blank">sarahmakesmaps.com</a> © <a href= "https://www.mapbox.com/about/maps/" target = "_blank">Mapbox</a> © <a href= "http://www.openstreetmap.org/about/" target = "_blank">OpenStreetMap</a> <strong><a href="https://www.mapbox.com/map-feedback/#/-74.07214706629739/40.71655453008873/15" target = "_blank">Improve this map</a></strong>
 </div>
 
+<div id='zoning-legend' class='legend'>
+    <strong><a href="http://www.cityofjerseycity.com/uploadedFiles/Data/Zoning%20Map%2020150527.pdf" target = "_blank">ZONE TYPES</a></strong>
+    <div><span style='background-color: #42e5f4'></span>Residential</div>
+    <div><span style='background-color: #847996'></span>Commercial</div>
+    <div><span style='background-color: #310A31'></span>Historic</div>
+    <div><span style='background-color: #6666ff'></span>Industrial</div>
+    <div><span style='background-color: #A3BCF9'></span>Special</div>
+    <div><span style='background-color: #ADFF2F'></span>Open Space</div>
+    <div><span style='background-color: #F7F3E3'></span>Medical</div>
+    <div><span style='background-color: #660066'></span>Government</div>
+    <div><span style='background-color: #ff80ff'></span>University</div>
+</div>
+
+
 <style>
     body { margin:0; padding:0; }
     h2, h3 {
@@ -105,6 +119,27 @@
     font-family: 'Roboto', sans-serif;   
     font-size: 75%;
     border-radius: 3px;
+}
+.legend {
+    background-color: #000000;
+    font-family: 'Roboto', sans-serif;   
+    font-size: 70%;
+    color: #FFFFFF;
+    opacity: 0.8;
+    border-radius: 3px;
+    bottom: 30px;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.10);
+    padding: 5px;
+    position: absolute;
+    right: 7px;
+    z-index: 1;
+}
+.legend div span {
+    display: inline-block;
+    height: 10px;
+    margin-right: 5px;
+    width: 10px;
+    opacity: 0.8;
 }
 #features {
     top: 0;
