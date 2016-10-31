@@ -170,6 +170,10 @@ mapboxgl.accessToken = 'pk.eyJ1Ijoic2FyYWhtbGV2aW5lIiwiYSI6IlAweXNYVEUifQ._dz052
 if (!mapboxgl.supported()) {
     alert('Your browser does not support Mapbox GL');
 } else {
+    var bounds = [
+        [-74.122906, 40.684179], 
+        [-74.012957, 40.772768] 
+    ];
     var map = new mapboxgl.Map({
         container: 'map',
         zoom: 14.0,
@@ -181,12 +185,6 @@ if (!mapboxgl.supported()) {
         attributionControl: false,
         style: 'mapbox://styles/sarahmlevine/ciux9lxwv00iy2jqneit1egms',
     });
-
-
-    var bounds = [
-        [-74.122906, 40.684179], 
-        [-74.012957, 40.772768] 
-    ];
 
     map.getCanvas().style.cursor = 'default';
 
