@@ -176,7 +176,8 @@ if (!mapboxgl.supported()) {
     ];
     var map = new mapboxgl.Map({
         container: 'map',
-        zoom: 14.0,
+        minZoom: 14,
+        zoom: 14.1,
         center: [-74.0495, 40.7204],
         pitch: 48.53,
         bearing: -24.50,
