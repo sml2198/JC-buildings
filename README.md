@@ -6,7 +6,7 @@ Building shapes live in <a href= "http://www.openstreetmap.org/export#map=13/40.
 Merged datasets courtesy of <a href= "http://data.jerseycitynj.gov./" target = "_blank">Jersey City Open Data Portal</a>.
 
 Read about <a href ="http://www.sarahmakesmaps.com/blog/2016/3/mapping-jersey-city" target= "_blank"> why and how</a>. <a href = 
-"http://sml2198.github.io/JC-buildings/JC-buildings.html" target = "_blank">See it</a> live. 
+"http://sml2198.github.io/JC-buildings/JC-buildings.html" target = "_blank">See it</a> live. NEW: See the <a href = "http://sml2198.github.io/JC-buildings/10-19-16.html#14.1/40.7194/-74.0461/-24.5/49" target = "_blank">3D version</a>. 
 
 ![screen-shot-final](https://cloud.githubusercontent.com/assets/6125152/19913512/7c374eba-a060-11e6-9425-8ff46c10facf.png)
 
