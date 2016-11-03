@@ -39,21 +39,22 @@
         <p>Not all information exists for all buildings. Many fields are "undefined".</p>
     </div></div>
 <div id='attribution'>
- <a class="twitter-share-button" href="https://twitter.com/intent/tweet?text=Jersey%20City%203D%20Building%20Map&via=sarahmakesmaps&url=https%3A%2F%2Fsml2198.github.io/JC-buildings/10-19-16.html.com%2F" target = "_blank">Tweet</a>
+<a class="twitter-share-button" href="https://twitter.com/intent/tweet?text=Jersey%20City%203D%20Building%20Map&via=sarahmakesmaps&url=https%3A%2F%2Fsml2198.github.io/JC-buildings/10-19-16.html.com%2F" target = "_blank">Tweet</a>
    © <a href= "http://www.sarahmakesmaps.com" target = "_blank">sarahmakesmaps.com</a> © <a href= "https://www.mapbox.com/about/maps/" target = "_blank">Mapbox</a> © <a href= "http://www.openstreetmap.org/about/" target = "_blank">OpenStreetMap</a> <strong><a href="https://www.mapbox.com/map-feedback/#/-74.07214706629739/40.71655453008873/15" target = "_blank">Improve this map</a></strong>
 </div>
 
+
 <div id='zoning-legend' class='legend'>
     <strong><a href="http://www.cityofjerseycity.com/uploadedFiles/Data/Zoning%20Map%2020150527.pdf" target = "_blank">ZONE TYPES</a></strong><br>
-    <div><span style='background-color: #A3BCF9'></span>Special</div>
-    <div><span style='background-color: #42e5f4'></span>Residential</div>
-    <div><span style='background-color: #5A3A5A'></span>Historic</div>
-    <div><span style='background-color: #847996'></span>Commercial</div>
-    <div><span style='background-color: #6666ff'></span>Industrial</div>
-    <div><span style='background-color: #660066'></span>Government</div>
-    <div><span style='background-color: #e6ccff'></span>University</div>
-    <div><span style='background-color: #ADFF2F'></span>Open Space</div>
-    <div><span style='background-color: #d6ebf2'></span>Medical</div>
+    <div><span style='background-color: #A3BCF9'></span><a href = "http://www.jerseycitynj.gov/data.aspx?id=14834" target = "_blank" style="text-decoration:none">Special</a></div>
+    <div><span style='background-color: #42e5f4'></span><a href = "https://www.municode.com/library/nj/jersey_city/codes/code_of_ordinances?nodeId=CH345ZO_ARTVZODEST_S345-40ONTWFAHODI" target = "_blank" style="text-decoration:none">Residential</a></div>
+    <div><span style='background-color: #5A3A5A'></span><a href = "https://www.municode.com/library/nj/jersey_city/codes/code_of_ordinances?nodeId=CH345ZO_ARTVZODEST_S345-58HHIDI" target = "_blank" style="text-decoration:none">Historic</a></div>
+    <div><span style='background-color: #847996'></span><a href = "https://www.municode.com/library/nj/jersey_city/codes/code_of_ordinances?nodeId=CH345ZO_ARTVZODEST_S345-45NCNECODI" target = "_blank" style="text-decoration:none">Commercial</a></div>
+    <div><span style='background-color: #6666ff'></span><a href = "https://www.municode.com/library/nj/jersey_city/codes/code_of_ordinances?nodeId=CH345ZO_ARTVZODEST_S345-50IINDI" target = "_blank" style="text-decoration:none">Industrial</a></div>
+    <div><span style='background-color: #660066'></span><a href = "https://www.municode.com/library/nj/jersey_city/codes/code_of_ordinances?nodeId=CH345ZO_ARTVZODEST_S345-54GGODI" target = "_blank" style="text-decoration:none">Government</a></div>
+    <div><span style='background-color: #e6ccff'></span><a href = "https://www.municode.com/library/nj/jersey_city/codes/code_of_ordinances?nodeId=CH345ZO_ARTVZODEST_S345-52UUNDI" target = "_blank" style="text-decoration:none">University</div>
+    <div><span style='background-color: #ADFF2F'></span><a href = "https://www.municode.com/library/nj/jersey_city/codes/code_of_ordinances?nodeId=CH345ZO_ARTVZODEST_S345-55POSPAOPSPDI" target = "_blank" style="text-decoration:none">Open Space</a></div>
+    <div><span style='background-color: #d6ebf2'></span><a href = "https://www.municode.com/library/nj/jersey_city/codes/code_of_ordinances?nodeId=CH345ZO_ARTVZODEST_S345-53MMEDI" target = "_blank" style="text-decoration:none">Medical</a></div>
 </div>
 
 
@@ -163,6 +164,7 @@
     opacity: 0.82;
     border-radius: 3px;
 }
+
 </style>
 
 <script>
@@ -174,6 +176,7 @@ if (!mapboxgl.supported()) {
         [-74.122906, 40.684179], 
         [-74.012957, 40.772768] 
     ];
+
     var map = new mapboxgl.Map({
         container: 'map',
         minZoom: 14,
@@ -213,7 +216,7 @@ if (!mapboxgl.supported()) {
           var states = map.queryRenderedFeatures(e.point, {
               layers: layers
         });
-                 if (states.length > 0) {
+          if (states.length > 0) {
               document.getElementById('pd').innerHTML = "<h3>" 
                 + "Zone: " + '<a href ="' + states[0].properties.zoningURL + '">' + states[0].properties.zone + '</a>' + "</h3><p>" 
                 + "Ward: " + states[0].properties.ward +  "<br>" 
@@ -248,13 +251,13 @@ if (!mapboxgl.supported()) {
     function loadbuildings() {
         map.addSource('Special', {
             type: 'vector',
-            url: 'mapbox://sarahmlevine.sarahmlevine.906mu5of'
+            url: 'mapbox://sarahmlevine.sarahmlevine.afk99eno'
         });
         map.addLayer({
             'id': 'Residential',
             'source': 'composite',
             'filter': ['==', 'zone', ('R-1' || 'R-1A' || 'R-1F' || 'R-2' || 'R-3' || 'R-4' || 'OR' || 'Caven Point')],
-            'source-layer': 'buildings_simple-b1a8dl',
+            'source-layer': 'buildings-7lbvly',
             'type': 'fill',
             'minzoom': 14,
             'paint': {
@@ -263,14 +266,14 @@ if (!mapboxgl.supported()) {
                     'type': 'identity',
                     'property': 'bldgHeight'
                 },
-                'fill-opacity': .6
+                'fill-opacity': .5
             }
         });
         map.addLayer({
             'id': 'Special',
             'source': 'composite',
             'filter': ['!=', 'zone', ('C' || 'CBD' || 'DT' || 'H' || 'G' || 'R-1' || 'R-1A' || 'R-1F' || 'R-2' || 'R-3' || 'R-4' || 'U' || 'OR' || 'Caven Point' || 'C/A' || 'HC' || 'NC' || 'P/O' || 'M' || 'I' || 'Marine Industrial' || 'Greenville Industrial' || 'Chapel Avenue Industrial Park' || 'PI' )],
-            'source-layer': 'buildings_simple-b1a8dl',
+            'source-layer': 'buildings-7lbvly',
             'type': 'fill',
             'minzoom': 14,
             'paint': {
@@ -286,7 +289,7 @@ if (!mapboxgl.supported()) {
             'id': 'Commercial',
             'source': 'composite',
             'filter': ['==', 'zone', ('C/A' || 'CBD' || 'DT' || 'HC' || 'NC')],
-            'source-layer': 'buildings_simple-b1a8dl',
+            'source-layer': 'buildings-7lbvly',
             'type': 'fill',
             'minzoom': 14,
             'paint': {
@@ -302,7 +305,7 @@ if (!mapboxgl.supported()) {
             'id': 'Historic',
             'source': 'composite',
             'filter': ['==', 'zone', 'H'],
-            'source-layer': 'buildings_simple-b1a8dl',
+            'source-layer': 'buildings-7lbvly',
             'type': 'fill',
             'minzoom': 14,
             'paint': {
@@ -311,14 +314,14 @@ if (!mapboxgl.supported()) {
                     'type': 'identity',
                     'property': 'bldgHeight'
                 },
-                'fill-opacity': .6
+                'fill-opacity': .5
             }
         });
         map.addLayer({
             'id': 'Industrial',
             'source': 'composite',
             'filter': ['==', 'zone', ('Chapel Avenue Industrial Park' || 'Claremont Industrial' || 'Greenville Industrial' || 'Marine Industrial' || 'I' || 'PI')],
-            'source-layer': 'buildings_simple-b1a8dl',
+            'source-layer': 'buildings-7lbvly',
             'type': 'fill',
             'minzoom': 14,
             'paint': {
@@ -334,7 +337,7 @@ if (!mapboxgl.supported()) {
             'id': 'University',
             'source': 'composite',
             'filter': ['==', 'zone', 'U'],
-            'source-layer': 'buildings_simple-b1a8dl',
+            'source-layer': 'buildings-7lbvly',
             'type': 'fill',
             'minzoom': 14,
             'paint': {
@@ -350,7 +353,7 @@ if (!mapboxgl.supported()) {
             'id': 'Government',
             'source': 'composite',
             'filter': ['==', 'zone', 'G'],
-            'source-layer': 'buildings_simple-b1a8dl',
+            'source-layer': 'buildings-7lbvly',
             'type': 'fill',
             'minzoom': 14,
             'paint': {
@@ -366,7 +369,7 @@ if (!mapboxgl.supported()) {
             'id': 'Medical',
             'source': 'composite',
             'filter': ['==', 'zone', 'M'],
-            'source-layer': 'buildings_simple-b1a8dl',
+            'source-layer': 'buildings-7lbvly',
             'type': 'fill',
             'minzoom': 14,
             'paint': {
@@ -382,7 +385,7 @@ if (!mapboxgl.supported()) {
             'id': 'Open Space',
             'source': 'composite',
             'filter': ['==', 'zone', ('C' || 'P/O')],
-            'source-layer': 'buildings_simple-b1a8dl',
+            'source-layer': 'buildings-7lbvly',
             'type': 'fill',
             'minzoom': 14,
             'paint': {
