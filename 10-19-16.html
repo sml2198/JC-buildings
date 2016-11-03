@@ -213,7 +213,7 @@ if (!mapboxgl.supported()) {
           var states = map.queryRenderedFeatures(e.point, {
               layers: layers
         });
-          if (states.length > 0) {
+                 if (states.length > 0) {
               document.getElementById('pd').innerHTML = "<h3>" 
                 + "Zone: " + '<a href ="' + states[0].properties.zoningURL + '">' + states[0].properties.zone + '</a>' + "</h3><p>" 
                 + "Ward: " + states[0].properties.ward +  "<br>" 
@@ -224,7 +224,6 @@ if (!mapboxgl.supported()) {
                 + "Address: " + states[0].properties.propLoc +  "<br>" 
                 + "Year Built: " + states[0].properties.yearBuilt +  "<br>" 
                         + "Square Feet: " + states[0].properties.squareFeet +  "<br>" 
-                             + "Number of Stories: " + states[0].properties.numFloors +  "<br>" 
                 + "Sale Price: " + states[0].properties.salePrice +  "<br>" 
                 + "Sale Date: " + states[0].properties.saleDate +  "<br>"  
                 + "Building Assessment: " + states[0].properties.bldgAssess +  "<br>" 
@@ -233,9 +232,10 @@ if (!mapboxgl.supported()) {
                 + "Owner: " + states[0].properties.ownerName +  "<br>" 
                     + "Owner Address: " + states[0].properties.ownerMail + ', ' + states[0].properties.ownerMail2 + "<br>" 
                 + "Static URL: " + '<a href ="http://www.' + states[0].properties.bldgURL + '" target="_blank">' 
-                    + "www.'" + " " + states[0].properties.bldgURL
+                    + "www." + " " + states[0].properties.bldgURL
                     + '</a>' + "<br>" 
-                + "Credit: © OpenStreetMap contributors";
+                + "Credit: © OpenStreetMap contributors" + "<br>"
+                + "<i>Want to propose an information update for this building? Fill out " + '<a href ="https://goo.gl/forms/zc57zuiDKh4Y3myq2" target="_blank">this form</a>' +  " and be sure to enter this building ID: " + states[0].properties.identifier + ".</i><br>";
           } else {
               document.getElementById('pd').innerHTML = '<p><i>A sort of love letter by Sarah Michael Levine. <a href="http://www.sarahmakesmaps.com/blog/2016/6/mapping-jersey-city-ii-every-building" target = "_blank">Read more</a> about how this data was created and why it exists.</i><br><strong>CONTROLS</strong></p><p>Click on a building footprint for zone and parcel information.</p><p>Use shift + up and down/left and right arrows to tilt map and pan.</p><p>Right click and use mouse to spin.</p><p>Hold shift key, click and drag to draw a bounding box to zoom to an area.</p><p>Mobile browsing discouraged.</p><p><strong>THINGS TO KNOW</strong></p><p>For building info, click on building footprints (not the 3D shapes).</p><p>Not all information exists for all buildings. Many fields are "undefined".</p>';
           }
