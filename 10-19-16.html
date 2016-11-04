@@ -251,13 +251,13 @@ if (!mapboxgl.supported()) {
     function loadbuildings() {
         map.addSource('Special', {
             type: 'vector',
-            url: 'mapbox://sarahmlevine.sarahmlevine.afk99eno'
+            url: 'mapbox://sarahmlevine.sarahmlevine.1rz41on6'
         });
         map.addLayer({
             'id': 'Residential',
             'source': 'composite',
             'filter': ['==', 'zone', ('R-1' || 'R-1A' || 'R-1F' || 'R-2' || 'R-3' || 'R-4' || 'OR' || 'Caven Point')],
-            'source-layer': 'buildings-7lbvly',
+            'source-layer': 'buildings-1909vz',
             'type': 'fill',
             'minzoom': 14,
             'paint': {
@@ -266,6 +266,10 @@ if (!mapboxgl.supported()) {
                     'type': 'identity',
                     'property': 'bldgHeight'
                 },
+                'fill-extrude-base': {
+                    'type': 'identity',
+                    'property': 'minHeight'
+                },  
                 'fill-opacity': .5
             }
         });
@@ -273,7 +277,7 @@ if (!mapboxgl.supported()) {
             'id': 'Special',
             'source': 'composite',
             'filter': ['!=', 'zone', ('C' || 'CBD' || 'DT' || 'H' || 'G' || 'R-1' || 'R-1A' || 'R-1F' || 'R-2' || 'R-3' || 'R-4' || 'U' || 'OR' || 'Caven Point' || 'C/A' || 'HC' || 'NC' || 'P/O' || 'M' || 'I' || 'Marine Industrial' || 'Greenville Industrial' || 'Chapel Avenue Industrial Park' || 'PI' )],
-            'source-layer': 'buildings-7lbvly',
+            'source-layer': 'buildings-1909vz',
             'type': 'fill',
             'minzoom': 14,
             'paint': {
@@ -289,7 +293,7 @@ if (!mapboxgl.supported()) {
             'id': 'Commercial',
             'source': 'composite',
             'filter': ['==', 'zone', ('C/A' || 'CBD' || 'DT' || 'HC' || 'NC')],
-            'source-layer': 'buildings-7lbvly',
+            'source-layer': 'buildings-1909vz',
             'type': 'fill',
             'minzoom': 14,
             'paint': {
@@ -305,7 +309,7 @@ if (!mapboxgl.supported()) {
             'id': 'Historic',
             'source': 'composite',
             'filter': ['==', 'zone', 'H'],
-            'source-layer': 'buildings-7lbvly',
+            'source-layer': 'buildings-1909vz',
             'type': 'fill',
             'minzoom': 14,
             'paint': {
@@ -321,7 +325,7 @@ if (!mapboxgl.supported()) {
             'id': 'Industrial',
             'source': 'composite',
             'filter': ['==', 'zone', ('Chapel Avenue Industrial Park' || 'Claremont Industrial' || 'Greenville Industrial' || 'Marine Industrial' || 'I' || 'PI')],
-            'source-layer': 'buildings-7lbvly',
+            'source-layer': 'buildings-1909vz',
             'type': 'fill',
             'minzoom': 14,
             'paint': {
@@ -337,7 +341,7 @@ if (!mapboxgl.supported()) {
             'id': 'University',
             'source': 'composite',
             'filter': ['==', 'zone', 'U'],
-            'source-layer': 'buildings-7lbvly',
+            'source-layer': 'buildings-1909vz',
             'type': 'fill',
             'minzoom': 14,
             'paint': {
@@ -353,7 +357,7 @@ if (!mapboxgl.supported()) {
             'id': 'Government',
             'source': 'composite',
             'filter': ['==', 'zone', 'G'],
-            'source-layer': 'buildings-7lbvly',
+            'source-layer': 'buildings-1909vz',
             'type': 'fill',
             'minzoom': 14,
             'paint': {
@@ -369,7 +373,7 @@ if (!mapboxgl.supported()) {
             'id': 'Medical',
             'source': 'composite',
             'filter': ['==', 'zone', 'M'],
-            'source-layer': 'buildings-7lbvly',
+            'source-layer': 'buildings-1909vz',
             'type': 'fill',
             'minzoom': 14,
             'paint': {
@@ -385,7 +389,7 @@ if (!mapboxgl.supported()) {
             'id': 'Open Space',
             'source': 'composite',
             'filter': ['==', 'zone', ('C' || 'P/O')],
-            'source-layer': 'buildings-7lbvly',
+            'source-layer': 'buildings-1909vz',
             'type': 'fill',
             'minzoom': 14,
             'paint': {
