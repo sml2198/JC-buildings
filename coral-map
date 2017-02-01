@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset='utf-8' />
+    <title></title>
+    <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
+    <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v0.32.1/mapbox-gl.js'></script>
+    <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v0.32.1/mapbox-gl.css' rel='stylesheet' />
+    <link href='https://fonts.googleapis.com/css?family=Montserrat|Roboto' rel='stylesheet' type='text/css'>
+    <style>
+        body { margin:0; padding:0; }
+        #map { position:absolute; top:0; bottom:0; width:100%; }
+    </style>
+</head>
+<body>
+
+<script src='https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-supported/v1.2.0/mapbox-gl-supported.js'></script>
+
+<style>
+ body { margin:0; padding:0; }
+    h2, h3 {
+        margin: 10px;
+        font-size: 2.4em;
+        color: #FFFFFF;
+        font-family: 'Montserrat', sans-serif;
+    }
+    h3 {
+        font-size: .9em;
+        color: #FFFFFF;
+    }
+    p {
+        font-size: 0.95em;
+        margin: 10px;
+        text-align: left;
+        color: #FFFFFF;
+    }
+    br {
+        line-height: 190%;
+     }
+    strong {
+        color: #a6a6a6;
+    }
+.map-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    margin-top: 7px;
+    margin-left: 7px;
+    font-family: 'Roboto', sans-serif;
+    overflow: auto;
+    border-radius: 5px;
+    font-size: 85%;
+    color: #FFFFFF;
+    background-color: #000000;
+    opacity: 0.85;
+}
+.legend {
+    background-color: #000000;
+    font-family: 'Roboto', sans-serif;   
+    font-size: 75%;
+    color: #FFFFFF;
+    opacity: 0.8;
+    border-radius: 3px;
+    bottom: 32px;
+    padding: 5px;
+    position: absolute;
+    right: 7px;
+    width: 90px;
+    height: 130px;
+    z-index: 1;
+}
+.legend div span {
+    border-radius: 1px;
+    display: inline-block;
+    height: 13px;
+    margin-right: 5px;
+    width: 13px;
+    opacity: 0.6;
+}
+</style>
+
+<div id='map'></div>
+
+<div class='map-overlay' id='features'><h2>KRISTEN'S DOPE MAP</h2>
+    <div id='pd'><p>TEXT AND STUFF. LA LA LA LA LA LA LA LA.<br>
+	    <p><strong>CONTROLS</strong></p>
+            <p>Use shift + up and down/left and right arrows to tilt map and pan.</p>
+            <p>Right click and use mouse to spin.</p>
+            <p>Hold shift key, click and drag to draw a bounding box to zoom to an area.</p>
+	    <p><strong>THINGS TO KNOW</strong></p>
+	        <p><a href = "http://www.reefbase.org/gis_maps/reefs_location_data_description.txt">Reef information</a>.</p>
+	        <p>BLAH.</p>
+            <p>BLAH.</p>
+            <p>BLAH.</p>
+            <p>BLAH.</p>
+    </div>
+</div>
+
+<div id='legend' class='legend'>
+    <strong>CORAL TYPES</strong><br>
+    <div><span style='background-color: #CDFF72'></span>Coral 1</div>
+    <div><span style='background-color: #B8FF34'></span>Coral 2</div>
+    <div><span style='background-color: #98DE15'></span>Coral 3</div>
+    <div><span style='background-color: #6EA30B'></span>Coral 4</div>
+    <div><span style='background-color: #446702'></span>Coral 5</div>
+    <div><span style='background-color: #1F2E03'></span>Coral 6</div>
+</div>
+
+<script>
+mapboxgl.accessToken = 'pk.eyJ1Ijoia2FsdGVuYnVyZ2VyIiwiYSI6ImNpeWRna3VlMDAwMDUyeWs1MTlwNXIzaTkifQ.UCq8RucujXIzFpRQPO_Dog';
+if (!mapboxgl.supported()) {
+    alert('Your browser does not support Mapbox GL');
+} else {
+	var map = new mapboxgl.Map({
+	    container: 'map', // container id
+	    style: 'mapbox://styles/kaltenburger/ciydj5z7c002p2sp7bwy8sp4z', //stylesheet location
+	    center: [122.7832, -13.5418], // starting position
+	    minZoom: 3,
+	    zoom: 3 // starting zoom
+	});
+}
+
+</script>
+
+</body>
+</html>
