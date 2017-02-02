@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset='utf-8' />
-    <title></title>
+    <title>Kristen's Coral Reef Map</title>
     <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
     <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v0.32.1/mapbox-gl.js'></script>
     <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v0.32.1/mapbox-gl.css' rel='stylesheet' />
@@ -40,6 +40,15 @@
     strong {
         color: #a6a6a6;
     }
+    a:link {
+    color: #a6a6a6;
+    }
+    a:visited {
+    color: #a6a6a6;        
+    }
+    a:hover {
+    color: #a6a6a6;                
+    }
 .map-overlay {
     position: absolute;
     top: 0;
@@ -59,7 +68,7 @@
     font-family: 'Roboto', sans-serif;   
     font-size: 75%;
     color: #FFFFFF;
-    opacity: 0.8;
+    opacity: 0.85;
     border-radius: 3px;
     bottom: 32px;
     padding: 5px;
@@ -75,25 +84,69 @@
     height: 13px;
     margin-right: 5px;
     width: 13px;
-    opacity: 0.6;
+    opacity: 0.75;
+}
+#menu {   
+    position: absolute;
+    color: #FFFFFF;
+    right: 0;
+    top: 0;
+    background-color: #000000;
+    opacity: 0.7;
+    padding: 5px;
+    font-family: 'Roboto', sans-serif;   
+    font-size: 75%;
+    border-radius: 3px;
+}
+#attribution {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    background: rgba(255, 255, 255, 0.7);
+    font-family: 'Roboto', sans-serif; 
+    color: #FFFFFF;
+    background-color: #000000;
+    padding: 5px;   
+    font-size: 80%;
+    opacity: 0.82;
+    border-radius: 3px;
+}
+.mapboxgl-popup {
+    max-width: 400px;
+    font-family: 'Roboto', sans-serif;
+    padding: 5px;   
+    opacity: 0.8;
 }
 </style>
 
 <div id='map'></div>
 
+<div id='menu'>
+    <input id='ciydj5z7c002p2sp7bwy8sp4z' type='radio' name='rtoggle' value='ciydj5z7c002p2sp7bwy8sp4z' checked='checked'>
+    <label for='ciydj5z7c002p2sp7bwy8sp4z'>light</label>
+    <input id='ciyo0frx9003p2rlre7ofcy67' type='radio' name='rtoggle' value='ciyo0frx9003p2rlre7ofcy67'>
+    <label for='ciyo0frx9003p2rlre7ofcy67'>satellite</label>
+</div>
+
+
 <div class='map-overlay' id='features'><h2>KRISTEN'S DOPE MAP</h2>
     <div id='pd'><p>TEXT AND STUFF. LA LA LA LA LA LA LA LA.<br>
-	    <p><strong>CONTROLS</strong></p>
+        <p><strong>CONTROLS</strong></p>
             <p>Use shift + up and down/left and right arrows to tilt map and pan.</p>
             <p>Right click and use mouse to spin.</p>
             <p>Hold shift key, click and drag to draw a bounding box to zoom to an area.</p>
-	    <p><strong>THINGS TO KNOW</strong></p>
-	        <p><a href = "http://www.reefbase.org/gis_maps/reefs_location_data_description.txt">Reef information</a>.</p>
-	        <p>BLAH.</p>
+        <p><strong>THINGS TO KNOW</strong></p>
+            <p><a href = "http://www.reefbase.org/gis_maps/reefs_location_data_description.txt">Reef information</a>.</p>
+            <p>BLAH.</p>
             <p>BLAH.</p>
             <p>BLAH.</p>
             <p>BLAH.</p>
     </div>
+</div>
+
+<div id='attribution'>
+<a class="twitter-share-button" href="https://twitter.com/home?status=Check%20out%20this%20great%20coral%20%23map!" target = "_blank">Tweet</a>
+   © <a href = "http://brown.stanford.edu/" target = "blank">Brown Institute for Media Innovation</a> © <a href= "https://www.mapbox.com/about/maps/" target = "_blank">Mapbox</a> © <a href= "http://www.openstreetmap.org/about/" target = "_blank">OpenStreetMap</a> <strong><a href="https://www.mapbox.com/map-feedback/#/-74.07214706629739/40.71655453008873/15" target = "_blank">Improve this map</a></strong>
 </div>
 
 <div id='legend' class='legend'>
@@ -111,13 +164,45 @@ mapboxgl.accessToken = 'pk.eyJ1Ijoia2FsdGVuYnVyZ2VyIiwiYSI6ImNpeWRna3VlMDAwMDUye
 if (!mapboxgl.supported()) {
     alert('Your browser does not support Mapbox GL');
 } else {
-	var map = new mapboxgl.Map({
-	    container: 'map', // container id
-	    style: 'mapbox://styles/kaltenburger/ciydj5z7c002p2sp7bwy8sp4z', //stylesheet location
-	    center: [122.7832, -13.5418], // starting position
-	    minZoom: 3,
-	    zoom: 3 // starting zoom
-	});
+
+    var map = new mapboxgl.Map({
+        container: 'map', // container id
+        style: 'mapbox://styles/kaltenburger/ciydj5z7c002p2sp7bwy8sp4z',
+        center: [122.7832, -13.5418], // starting position
+        minZoom: 3, // minimum zoom
+        zoom: 3, // starting zoom
+        attributionControl: false // custom attribution
+    });
+
+    var layers = ['coral-1', 'coral-2', 'coral-3', 'coral-4', 'coral-5', 'coral-6'];
+    var layerList = document.getElementById('menu');
+    var inputs = layerList.getElementsByTagName('input');
+
+    function switchLayer(layer) {
+        var layerId = layer.target.id;
+        map.setStyle('mapbox://styles/kaltenburger/' + layerId );
+    }
+
+    for (var i = 0; i < inputs.length; i++) {
+        inputs[i].onclick = switchLayer;
+    }
+
+    map.on('click', function (e) {
+        var features = map.queryRenderedFeatures(e.point, { layers: ['coral-1', 'coral-2', 'coral-3', 'coral-4', 'coral-5', 'coral-6'] });
+        if (!features.length) {
+            return;
+        }
+        var feature = features[0];
+        var popup = new mapboxgl.Popup()
+            .setLngLat(feature.geometry.coordinates)
+            .setHTML(feature.properties.Reef)
+            .addTo(map);
+    });
+
+    map.on('mousemove', function (e) {
+        var features = map.queryRenderedFeatures(e.point, { layers: ['coral-1', 'coral-2', 'coral-3', 'coral-4', 'coral-5', 'coral-6'] });
+        map.getCanvas().style.cursor = (features.length) ? 'pointer' : '';
+    });
 }
 
 </script>
