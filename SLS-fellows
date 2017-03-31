@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset='utf-8' />
+    <title>SLS Fellows Map</title>
+    <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
+    <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v0.32.1/mapbox-gl.js'></script>
+    <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v0.32.1/mapbox-gl.css' rel='stylesheet' />
+    <link href='https://fonts.googleapis.com/css?family=Montserrat|Roboto' rel='stylesheet' type='text/css'>
+    <style>
+        body { margin:0; padding:0; }
+        #map { position:absolute; top:0; bottom:0; width:100%; }
+    </style>
+</head>
+<body>
+
+<script src='https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-supported/v1.2.0/mapbox-gl-supported.js'></script>
+
+<style>
+ body { margin:0; padding:0; }
+    h2, h3 {
+        margin: 10px;
+        font-size: 2.4em;
+        color: #FFFFFF;
+        font-family: 'Montserrat', sans-serif;
+    }
+    h3 {
+        font-size: 1.1em;
+        color: #FFFFFF;
+    }
+    p {
+        font-size: 0.95em;
+        margin: 10px;
+        text-align: left;
+        color: #FFFFFF;
+    }
+    br {
+        line-height: 190%;
+     }
+    strong {
+        color: #a6a6a6;
+    }
+    a:link {
+    color: #a6a6a6;
+    }
+    a:visited {
+    color: #a6a6a6;        
+    }
+    a:hover {
+    color: #a6a6a6;                
+    }
+.map-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    margin-top: 7px;
+    margin-left: 7px;
+    font-family: 'Roboto', sans-serif;
+    overflow: auto;
+    border-radius: 5px;
+    font-size: 85%;
+    color: #FFFFFF;
+    background-color: #000000;
+    opacity: 0.85;
+    width: 18%;
+}
+.legend {
+    background-color: #000000;
+    font-family: 'Roboto', sans-serif;   
+    font-size: 85%;
+    color: #FFFFFF;
+    opacity: 0.85;
+    border-radius: 3px;
+    bottom: 32px;
+    padding: 5px;
+    position: absolute;
+    right: 7px;
+    width: 95px;
+    height: 100px;
+    z-index: 1;
+}
+.legend div span {
+    border-radius: 1px;
+    display: inline-block;
+    height: 13px;
+    margin-right: 5px;
+    width: 13px;
+    opacity: 0.75;
+}
+
+#attribution {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    background: rgba(255, 255, 255, 0.7);
+    font-family: 'Roboto', sans-serif; 
+    color: #FFFFFF;
+    background-color: #000000;
+    padding: 5px;   
+    font-size: 80%;
+    opacity: 0.82;
+    border-radius: 3px;
+}
+.mapboxgl-popup {
+    max-width: 400px;
+    font-family: 'Roboto', sans-serif;
+    padding: 5px;   
+    opacity: 0.8;
+}
+</style>
+
+<div id='map'></div>
+
+<div class='map-overlay' id='features'><h2>SLS Fellows Map</h2>
+    <div id='pd'><p><br>A map of some favorite places of Stanford Law School Empirical Research Fellows.<br>
+        <p><strong>CONTROLS</strong></p>
+            <p>Use shift + up and down/left and right arrows to tilt map and pan.</p>
+            <p>Right click and use mouse to spin.</p>
+            <p>Hold shift key, click and drag to draw a bounding box to zoom to an area.</p>
+        <p><strong></strong></p>
+    </div>
+</div>
+
+<div id='attribution'>
+<a class="twitter-share-button" href="https://twitter.com/home?status=Check%20out%20this%20great%20coral%20%23map!" target = "_blank">Tweet</a>
+   © <a href = "http://sarahmakesmaps.com/" target = "blank">sarahmakesmaps</a> © <a href= "https://www.mapbox.com/about/maps/" target = "_blank">Mapbox</a> © <a href= "http://www.openstreetmap.org/about/" target = "_blank">OpenStreetMap</a> <strong><a href="https://www.mapbox.com/map-feedback/#/-74.07214706629739/40.71655453008873/15" target = "_blank">Improve this map</a></strong>
+</div>
+
+<div id='legend' class='legend'>
+    <strong>Category</strong><br>
+    <div><span style='background-color: hsla(185, 86%, 57%, 0.79)'></span>Do</div>
+    <div><span style='background-color: hsla(93, 84%, 63%, 0.79)'></span>Adventure</div>
+    <div><span style='background-color: hsla(226, 100%, 62%, 0.79)'></span>Drink</div>
+    <div><span style='background-color: hsla(313, 84%, 63%, 0.79)'></span>Eat</div>
+</div>
+
+<script>
+mapboxgl.accessToken = 'pk.eyJ1Ijoic2FyYWhtbGV2aW5lIiwiYSI6IlAweXNYVEUifQ._dz0522LtBABUYyfqP503Q';
+if (!mapboxgl.supported()) {
+    alert('Your browser does not support Mapbox GL');
+} else {
+
+    var map = new mapboxgl.Map({
+        container: 'map', // container id
+        style: 'mapbox://styles/sarahmlevine/cj0y7dfwj00b92rs0tgrr91ac',
+        center: [-122.392, 37.802], // starting position
+        minZoom: 3, // minimum zoom
+        zoom: 12.2, // starting zoom
+        attributionControl: false // custom attribution
+    });
+
+   map.on('load', function() {
+      var layers = ['Drink', 'Do', 'Eat', 'Adventure'];
+        layers.forEach(function(layer) {;
+          var item = document.createElement('div');
+          var key = document.createElement('span');
+          var value = document.createElement('span');
+          value.innerHTML = layer;
+          item.appendChild(key);
+          item.appendChild(value);
+        });
+        map.on('click', function (e) {
+          var states = map.queryRenderedFeatures(e.point, {
+              layers: layers
+          });
+          if (states.length > 0) {
+              document.getElementById('pd').innerHTML = "<h3>" 
+                + "<br>"
+                + states[0].properties.Name + "</h3><p>" 
+                + "<b>Description: </b>" + states[0].properties.Caption +  "<br>" 
+                + "<b>Address: </b>" + states[0].properties.Address +  "<br>"
+                + "<b>URL: </b>" + "<a href = '" + states[0].properties.URL + "', target = _blank>" + states[0].properties.URL + "</a>" + "<br>" 
+                + "<b>Category: </b>" + states[0].properties.Category +  "<br>";
+          } else {
+              document.getElementById('pd').innerHTML = '<p><br>A map of some favorite places of Stanford Law School Empirical Research Fellows.</i><br><strong>CONTROLS</strong></p><p>Click on a building for zone and parcel information.</p><p>Use shift + up and down/left and right arrows to tilt map and pan.</p><p>Right click and use mouse to spin.</p><p>Hold shift key, click and drag to draw a bounding box to zoom to an area.</p><p>Mobile browsing discouraged.</p>';
+          }
+        });
+    });
+map.getCanvas().style.cursor = 'default';
+}
+</script>
+
+</body>
+</html>
