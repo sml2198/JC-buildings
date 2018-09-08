@@ -114,7 +114,7 @@
 <div class='map-overlay' id='features'><h2>SLS Fellows Map</h2>
     <div id='pd'><p><br>A map of some favorite places of Stanford Law School Empirical Research Fellows.<br>
         <p><strong>CONTROLS</strong></p>
-            <p>Use shift + up and down/left and right arrows to tilt map and pan.</p>
+            <p>Click on a dot for info.</p>
             <p>Right click and use mouse to spin.</p>
             <p>Hold shift key, click and drag to draw a bounding box to zoom to an area.</p>
         <p><strong></strong></p>
@@ -172,7 +172,7 @@ if (!mapboxgl.supported()) {
                 + "<b>URL: </b>" + "<a href = '" + states[0].properties.URL + "', target = _blank>" + states[0].properties.URL + "</a>" + "<br>" 
                 + "<b>Category: </b>" + states[0].properties.Category +  "<br>";
           } else {
-              document.getElementById('pd').innerHTML = '<p><br>A map of some favorite places of Stanford Law School Empirical Research Fellows.</i><br><strong>CONTROLS</strong></p><p>Click on a building for zone and parcel information.</p><p>Use shift + up and down/left and right arrows to tilt map and pan.</p><p>Right click and use mouse to spin.</p><p>Hold shift key, click and drag to draw a bounding box to zoom to an area.</p><p>Mobile browsing discouraged.</p>';
+              document.getElementById('pd').innerHTML = '<p><br>A map of some favorite places of Stanford Law School Empirical Research Fellows.</i><br><strong>CONTROLS</strong></p><p>Click on a dot for info.</p><p>Right click and use mouse to spin.</p><p>Hold shift key, click and drag to draw a bounding box to zoom to an area.</p><p>Mobile browsing discouraged.</p>';
           }
         });
     });
